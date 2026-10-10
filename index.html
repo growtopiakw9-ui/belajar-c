@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Belajar Bahasa C</title>
+<style>
+:root{--bg:#fff6c9;--card:#fffdf0;--ink:#2b2a33;--muted:#6b6a75;--yellow:#ffd93b;--yellow2:#ffc400;--blue:#2f6fcf;--blue2:#1f4f9c;--ok:#2e9e5b;--bad:#e5484d;--line:#f0dc7a;--code:#1d2a44;--codeink:#fdf3b0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b2236;--card:#252e47;--ink:#fff3b8;--muted:#b9bfd4;--line:#3a456a;--code:#10172a}}
+:root[data-theme="dark"]{--bg:#1b2236;--card:#252e47;--ink:#fff3b8;--muted:#b9bfd4;--line:#3a456a;--code:#10172a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Nunito","Trebuchet MS",system-ui,sans-serif;line-height:1.5}
+.wrap{max-width:860px;margin:0 auto;padding:16px}
+header{text-align:center;padding:20px 0 8px}
+header h1{margin:0;font-size:clamp(26px,6vw,40px);color:var(--blue)}
+:root[data-theme="dark"] header h1{color:var(--yellow)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) header h1{color:var(--yellow)}}
+header p{margin:4px 0 0;color:var(--muted)}
+.mascot{font-size:56px;animation:bob 2s ease-in-out infinite;display:inline-block}
+@keyframes bob{50%{transform:translateY(-8px) rotate(4deg)}}
+@media (prefers-reduced-motion:reduce){.mascot{animation:none}}
+.tabs{display:flex;gap:8px;justify-content:center;margin:14px 0}
+.tab{border:3px solid var(--blue);background:var(--card);color:var(--blue);font:inherit;font-weight:800;padding:10px 18px;border-radius:999px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--blue);color:#fff}
+.card{background:var(--card);border:3px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 6px 0 var(--line)}
+.bar{height:12px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:12px}
+.bar i{display:block;height:100%;background:var(--blue);width:0;transition:width .3s}
+.meta{display:flex;justify-content:space-between;color:var(--muted);font-weight:700;font-size:14px}
+.q{font-size:19px;font-weight:800;margin:10px 0}
+pre.snip,pre.out{background:var(--code);color:var(--codeink);padding:12px;border-radius:14px;overflow:auto;font:14px/1.5 ui-monospace,Consolas,monospace;margin:8px 0;white-space:pre-wrap}
+.opt{display:block;width:100%;text-align:left;font:inherit;background:var(--card);color:var(--ink);border:3px solid var(--line);border-radius:16px;padding:12px 14px;margin:8px 0;cursor:pointer;font-weight:700}
+.opt:hover:not(:disabled){border-color:var(--blue)}
+.opt.ok{border-color:var(--ok);background:rgba(46,158,91,.18)}
+.opt.bad{border-color:var(--bad);background:rgba(229,72,77,.18)}
+.opt:disabled{cursor:default}
+.exp{margin-top:10px;padding:10px 12px;border-radius:14px;background:rgba(255,217,59,.28);font-weight:600}
+button.go{background:var(--yellow);color:#2b2a33;border:3px solid var(--yellow2);font:inherit;font-weight:900;padding:10px 20px;border-radius:999px;cursor:pointer;box-shadow:0 4px 0 var(--yellow2)}
+button.go:active{transform:translateY(3px);box-shadow:none}
+button.alt{background:var(--card);color:var(--blue);border:3px solid var(--blue);font:inherit;font-weight:800;padding:8px 14px;border-radius:999px;cursor:pointer}
+:root[data-theme="dark"] button.alt{color:var(--yellow);border-color:var(--yellow)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.sp{flex:1}
+textarea{width:100%;background:var(--code);color:var(--codeink);border:3px solid var(--line);border-radius:14px;padding:12px;font:14px/1.5 ui-monospace,Consolas,monospace;resize:vertical;tab-size:4}
+label{font-weight:800;display:block;margin-top:10px}
+.score{text-align:center}
+.score .big{font-size:48px;font-weight:900;color:var(--blue)}
+:root[data-theme="dark"] .score .big{color:var(--yellow)}
+.hide{display:none}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:18px 0}
+.warn{font-size:13px;color:var(--muted);margin-top:8px}
+.modes{display:grid;gap:12px;margin-top:12px}
+.mode{display:flex;align-items:center;gap:14px;text-align:left;font:inherit;color:var(--ink);background:var(--card);border:3px solid var(--line);border-radius:20px;padding:14px 16px;cursor:pointer;box-shadow:0 4px 0 var(--line)}
+.mode:hover{border-color:var(--blue)}
+.mode .ic{font-size:30px}
+.mode b{font-size:20px;display:block}
+.mode small{color:var(--muted);font-weight:700}
+h2.t{text-align:center;margin:0 0 4px}
+.sub{text-align:center;color:var(--muted);margin:0 0 6px}
+.note{text-align:center;font-weight:700;margin-top:10px}
+.music{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;margin:0 0 14px;padding:8px 12px;background:var(--card);border:3px solid var(--line);border-radius:999px;font-weight:800;font-size:14px}
+.music input[type=range]{width:90px;accent-color:var(--blue)}
+.music .tn{color:var(--muted);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="mascot" aria-hidden="true">🍌</div>
+  <h1>Belajar Bahasa C</h1>
+  <p>Kuis pilihan ganda + tulis kode C sendiri, lalu jalankan!</p>
+</header>
+
+<div class="music" id="music">
+  <button class="alt" id="mplay" aria-pressed="false">🎵 Putar musik</button>
+  <label class="alt" for="mfile" style="margin:0;cursor:pointer;display:inline-block">📂 Pilih lagu</label>
+  <input type="file" id="mfile" accept="audio/*" class="hide">
+  <input type="range" id="mvol" min="0" max="100" value="50" aria-label="Volume">
+  <span class="tn" id="mname">Rainy Tacos: pilih file lagumu</span>
+</div>
+
+<div class="card" style="margin-bottom:14px;padding:12px 14px">
+  <label for="splink" style="margin:0 0 6px">🎧 Putar lagu dari Spotify</label>
+  <div class="row" style="margin:0">
+    <input id="splink" type="url" placeholder="Tempel link Spotify (lagu/playlist/album)" style="flex:1;min-width:180px;font:inherit;padding:8px 12px;border-radius:999px;border:3px solid var(--line);background:var(--card);color:var(--ink)">
+    <button class="go" id="spgo" style="padding:8px 16px">Muat</button>
+  </div>
+  <div id="spbox" style="margin-top:10px"></div>
+  <p class="warn" id="spmsg" style="margin:6px 0 0">Buka lagunya di Spotify, pilih Bagikan, lalu salin link dan tempel di sini. Lagu diputar langsung dari Spotify (butuh internet).</p>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab" role="tab" id="t1" aria-selected="true">🍌 Kuis</button>
+  <button class="tab" role="tab" id="t2" aria-selected="false">💻 Coding</button>
+  <button class="tab" id="theme" aria-label="Ganti tema" title="Ganti tema">🌙</button>
+</div>
+
+<section id="quiz" class="card">
+  <div id="menu">
+    <h2 class="t">Pilih mode dulu yuk!</h2>
+    <p class="sub">Tiap sesi ada 20 soal. Soal yang sudah keluar tidak diulang.</p>
+    <div class="modes" id="modes"></div>
+    <div class="note hide" id="resetnote"></div>
+  </div>
+  <div id="play" class="hide">
+    <div class="meta"><span id="no"></span><span id="sc"></span></div>
+    <div class="bar"><i id="pb"></i></div>
+    <div id="qbox"></div>
+    <div class="row"><button class="alt" id="quit">⬅ Ganti mode</button><span class="sp"></span><button class="go hide" id="next">Lanjut ➜</button></div>
+  </div>
+</section>
+
+<section id="code" class="card hide">
+  <div class="row" style="margin-top:0">
+    <label for="ex" style="margin:0">Contoh:</label>
+    <select id="ex" style="font:inherit;padding:6px 10px;border-radius:12px;border:3px solid var(--line);background:var(--card);color:var(--ink)"></select>
+  </div>
+  <label for="src">Kode C kamu</label>
+  <textarea id="src" rows="14" spellcheck="false"></textarea>
+  <label for="inp">Input (kalau pakai scanf, tulis di sini)</label>
+  <textarea id="inp" rows="2" spellcheck="false" placeholder="contoh: 5"></textarea>
+  <div class="row">
+    <button class="go" id="run">▶ Jalankan</button>
+    <button class="alt" id="clr">Bersihkan output</button>
+  </div>
+  <label>Output</label>
+  <pre class="out" id="out">Belum ada output. Tekan ▶ Jalankan!</pre>
+  <p class="warn">Catatan: ini interpreter C mini di browser. Cocok untuk belajar dasar (printf, scanf, if, loop, array, fungsi). Fitur lanjutan seperti pointer rumit atau file mungkin belum didukung.</p>
+</section>
+
+<footer>🍌 Dibuat untuk belajar C dengan santai 🍌</footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jscpp@2.0.9/dist/JSCPP.es5.min.js"></script>
+<script>
+/* Format soal: [pertanyaan, [pilihan], indexJawabanBenar, penjelasan, kode(opsional)] */
+const BANK={
+easy:[
+["Fungsi apa yang dipakai untuk menampilkan teks ke layar di C?",["print()","printf()","echo()","cout()"],1,"printf() dari <stdio.h> dipakai untuk mencetak ke layar."],
+["Header mana yang dipakai untuk printf dan scanf?",["<stdlib.h>","<string.h>","<stdio.h>","<math.h>"],2,"stdio = standard input output."],
+["Tipe data untuk bilangan bulat adalah...",["int","float","char","double"],0,"int menyimpan bilangan bulat, contoh 5, -3, 100."],
+["Apa output kode ini?",["5","7","x + 2","Error"],1,"x bernilai 5, ditambah 2 jadi 7.","int x = 5;\nprintf(\"%d\", x + 2);"],
+["Setiap pernyataan di C diakhiri dengan tanda...",[". (titik)",": (titik dua)","; (titik koma)",", (koma)"],2,"Titik koma menandai akhir sebuah pernyataan."],
+["Format specifier untuk mencetak int adalah...",["%d","%f","%c","%s"],0,"%d untuk int, %f untuk float, %c untuk char, %s untuk string."],
+["Format specifier untuk mencetak float adalah...",["%d","%c","%s","%f"],3,"%f dipakai untuk float dan double."],
+["Format specifier untuk satu karakter adalah...",["%c","%d","%f","%l"],0,"%c mencetak satu karakter."],
+["Cara menulis komentar satu baris di C adalah...",["// komentar","## komentar","<!-- komentar -->","-- komentar"],0,"// untuk satu baris, /* ... */ untuk beberapa baris."],
+["Program C mulai berjalan dari fungsi...",["start()","begin()","main()","run()"],2,"Selalu dimulai dari main()."],
+["Apa arti return 0; di akhir main()?",["Program gagal","Program selesai dengan sukses","Program mengulang","Program berhenti error"],1,"Nilai 0 berarti program selesai dengan normal."],
+["Kenapa scanf(\"%d\", &x) memakai tanda &?",["Supaya cepat","Untuk memberi alamat variabel x","Untuk menambah nilai","Tidak ada gunanya"],1,"scanf perlu alamat memori x supaya bisa mengisi nilainya."],
+["Index pertama array di C adalah...",["0","1","-1","Bebas"],0,"Array dimulai dari 0. Array arr[5] punya index 0 sampai 4."],
+["Hasil dari 5 + 3 * 2 adalah...",["16","11","13","10"],1,"Perkalian dulu: 3*2=6, lalu 5+6=11."],
+["Hasil dari 10 % 3 adalah...",["3","1","0","3.33"],1,"% adalah sisa bagi. 10 dibagi 3 sisa 1."],
+["Apa fungsi i++ ?",["Mengurangi i 1","Menambah i 1","Mengalikan i 2","Menghapus i"],1,"i++ menambah nilai i sebanyak 1."],
+["Karakter tunggal ditulis dengan tanda...",["'A' (petik tunggal)","\"A\" (petik ganda)","`A`","(A)"],0,"Char pakai petik tunggal, string pakai petik ganda."],
+["Teks (string) ditulis dengan tanda...",["'teks'","\"teks\"","{teks}","[teks]"],1,"String memakai petik ganda."],
+["Operator untuk membandingkan apakah dua nilai SAMA adalah...",["=","==","!=","=>"],1,"== membandingkan, = memberi nilai."],
+["Operator = berfungsi untuk...",["Membandingkan","Memberi nilai ke variabel","Menjumlah","Mengurangi"],1,"x = 5 artinya isi x dengan 5."],
+["Kata kunci untuk membuat percabangan (kondisi) adalah...",["when","if","case","check"],1,"if (kondisi) { ... }"],
+["Apa fungsi \\n di dalam printf?",["Tab","Baris baru","Menghapus","Spasi"],1,"\\n pindah ke baris baru."],
+["Berapa kali 'Hai' dicetak?",["3","4","5","0"],1,"i = 0,1,2,3 lalu berhenti saat i = 4.","for(int i = 0; i < 4; i++){\n  printf(\"Hai \");\n}"],
+["Loop yang mengecek syarat lebih dulu sebelum menjalankan isi adalah...",["while","do-while saja","goto","switch"],0,"while mengecek syarat di awal."],
+["Hasil dari 7 / 2 pada int adalah...",["3.5","3","4","2"],1,"Pembagian dua int menghasilkan int, jadi 3."],
+["Tipe data dengan ketelitian desimal lebih tinggi daripada float adalah...",["short","double","char","bool"],1,"double punya presisi lebih besar dari float."],
+["Nama variabel yang valid adalah...",["2angka","my_var","my-var","int"],1,"Nama tidak boleh diawali angka, tidak boleh pakai tanda minus, dan tidak boleh sama dengan kata kunci."],
+["Nama variabel yang TIDAK valid adalah...",["nilai1","_data","2nama","total"],2,"Nama variabel tidak boleh diawali angka."],
+["Cara komentar beberapa baris di C adalah...",["/* komentar */","// komentar //","<# komentar #>","{ komentar }"],0,"Dibuka dengan /* dan ditutup dengan */."],
+["Apa fungsi #include <stdio.h> ?",["Membuat variabel","Menyertakan library/header","Menghapus file","Menjalankan loop"],1,"#include memasukkan header supaya fungsinya bisa dipakai."],
+["Kapan blok else dijalankan?",["Saat if bernilai benar","Saat if bernilai salah","Selalu","Tidak pernah"],1,"else dijalankan kalau kondisi if tidak terpenuhi."],
+["Berapa nilai x?",["5","3","8","15"],2,"x += 3 sama dengan x = x + 3, jadi 8.","int x = 5;\nx += 3;"],
+["Operator && artinya...",["ATAU","DAN","TIDAK","SAMA DENGAN"],1,"&& bernilai benar kalau kedua sisi benar."],
+["Operator || artinya...",["DAN","ATAU","TIDAK","KURANG DARI"],1,"|| bernilai benar kalau salah satu sisi benar."],
+["Operator ! artinya...",["DAN","ATAU","TIDAK (negasi)","Faktorial"],2,"!benar jadi salah, dan sebaliknya."],
+["Perintah untuk keluar dari loop adalah...",["stop","exit loop","break","end"],2,"break langsung menghentikan loop."],
+["Loop yang pasti berjalan minimal satu kali adalah...",["for","while","do-while","if"],2,"do-while mengecek syarat di akhir, jadi isinya jalan dulu sekali."],
+["Kata kunci untuk membuat nilai yang tidak boleh diubah adalah...",["fixed","const","static","final"],1,"const int x = 5; berarti x tidak bisa diubah."],
+["Format specifier untuk string adalah...",["%c","%d","%s","%t"],2,"%s untuk string."],
+["Bahasa C diciptakan oleh...",["Dennis Ritchie","Bill Gates","Linus Torvalds","Mark Zuckerberg"],0,"Dennis Ritchie membuat C di Bell Labs sekitar tahun 1972."]
+],
+mid:[
+["Apa output kode ini?",["2.5","2.0","2","3"],1,"10/4 adalah pembagian int = 2, lalu disimpan ke float jadi 2.0.","float f = 10 / 4;\nprintf(\"%.1f\", f);"],
+["Apa output kode ini?",["5","6","4","Error"],0,"x++ (post-increment) memakai nilai lama dulu (5), baru menambah.","int x = 5;\nprintf(\"%d\", x++);"],
+["Apa output kode ini?",["5","6","7","4"],1,"++x (pre-increment) menambah dulu jadi 6, baru dipakai.","int x = 5;\nprintf(\"%d\", ++x);"],
+["Apa output kode ini?",["6","3","123","0"],0,"1 + 2 + 3 = 6.","int arr[3] = {1, 2, 3};\nint sum = 0;\nfor(int i = 0; i < 3; i++) sum += arr[i];\nprintf(\"%d\", sum);"],
+["strlen(\"halo\") menghasilkan...",["3","4","5","Error"],1,"strlen menghitung jumlah karakter tanpa karakter null: h,a,l,o = 4."],
+["Apa output kode ini?",["3","4","5","8"],1,"Ada 3 huruf + 1 karakter null '\\0' = 4 byte.","char s[] = \"abc\";\nprintf(\"%d\", (int)sizeof(s));"],
+["Apa output kode ini?",["Alamat x","7","*p","Error"],1,"*p mengambil nilai yang ditunjuk pointer p, yaitu x = 7.","int x = 7;\nint *p = &x;\nprintf(\"%d\", *p);"],
+["Apa output kode ini?",["B","BC","ABC","C"],1,"Tanpa break, eksekusi 'jatuh' ke case berikutnya: B lalu C.","switch(2){\n  case 1: printf(\"A\");\n  case 2: printf(\"B\");\n  case 3: printf(\"C\");\n}"],
+["Apa output kode ini?",["10","5","0","Error"],1,"C memakai pass by value, jadi a di fungsi hanya salinan. x tetap 5.","void f(int a){ a = 10; }\nint main(){\n  int x = 5;\n  f(x);\n  printf(\"%d\", x);\n}"],
+["Apa output kode ini?",["12345","1245","123","345"],1,"continue melewati putaran saat i == 3.","for(int i = 1; i <= 5; i++){\n  if(i == 3) continue;\n  printf(\"%d\", i);\n}"],
+["Berapa kali printf dijalankan?",["5","6","3","2"],1,"3 x 2 = 6 kali.","for(int i = 0; i < 3; i++)\n  for(int j = 0; j < 2; j++)\n    printf(\"*\");"],
+["Apa output kode ini?",["Sampah","0","1","Error"],1,"Elemen yang tidak diisi pada inisialisasi sebagian otomatis 0.","int arr[5] = {1, 2};\nprintf(\"%d\", arr[4]);"],
+["Hasil dari 5 / 2.0 adalah...",["2","2.5","3","2.0 saja"],1,"Kalau salah satu operand desimal, hasilnya desimal: 2.5."],
+["Apa output kode ini?",["3.9","3","4","Error"],1,"Casting ke int memotong bagian desimal.","printf(\"%d\", (int)3.9);"],
+["Apa output kode ini?",["10","20","5","3"],0,"Ternary: kondisi ? nilai_jika_benar : nilai_jika_salah. 5 > 3 benar, jadi 10.","int a = 5;\nprintf(\"%d\", a > 3 ? 10 : 20);"],
+["strcmp(a, b) mengembalikan 0 jika...",["a lebih besar dari b","a dan b sama","a lebih kecil dari b","Selalu error"],1,"0 artinya kedua string identik."],
+["Header yang dipakai untuk strcpy dan strlen adalah...",["<stdio.h>","<string.h>","<math.h>","<ctype.h>"],1,"Fungsi string ada di <string.h>."],
+["Berapa hasil faktorial(4)?",["10","24","16","12"],1,"4 x 3 x 2 x 1 = 24.","int faktorial(int n){\n  if(n <= 1) return 1;\n  return n * faktorial(n - 1);\n}"],
+["Variabel yang dideklarasikan di dalam fungsi disebut...",["Global","Lokal","Statis saja","Konstan"],1,"Variabel lokal hanya hidup di dalam fungsinya."],
+["Apa output kode ini?",["111","123","000","1 2 3 tidak tentu"],1,"Variabel static menyimpan nilainya antar pemanggilan fungsi.","void hitung(){\n  static int n = 0;\n  n++;\n  printf(\"%d\", n);\n}\n// hitung() dipanggil 3 kali"],
+["int m[2][3] punya berapa elemen?",["5","6","2","3"],1,"2 x 3 = 6 elemen."],
+["Hasil dari 5 & 3 (bitwise AND) adalah...",["1","7","8","2"],0,"101 & 011 = 001 = 1."],
+["Hasil dari 5 | 3 (bitwise OR) adalah...",["1","7","6","8"],1,"101 | 011 = 111 = 7."],
+["Hasil dari 1 << 3 adalah...",["3","6","8","4"],2,"Geser kiri 3 kali sama dengan 1 x 2 x 2 x 2 = 8."],
+["Apa output kode ini?",["3.14159","3.14","3.1","3"],1,"%.2f menampilkan 2 angka di belakang koma.","printf(\"%.2f\", 3.14159);"],
+["malloc tersedia di header...",["<stdlib.h>","<stdio.h>","<string.h>","<memory.h>"],0,"malloc dan free ada di <stdlib.h>."],
+["Pointer yang tidak menunjuk ke mana-mana diberi nilai...",["0.0","NULL","VOID","EMPTY"],1,"NULL menandai pointer kosong."],
+["arr[1] sama artinya dengan...",["*(arr + 1)","&arr + 1","arr * 1","*arr + 1"],0,"Notasi array adalah bentuk lain dari aritmetika pointer."],
+["Untuk membaca string dengan scanf, kita menulis...",["scanf(\"%s\", &nama);","scanf(\"%s\", nama);","scanf(nama);","scanf(\"%c\", nama);"],1,"Nama array sudah berupa alamat, jadi tidak perlu &."],
+["Berapa nilai sizeof(char)?",["1","2","4","8"],0,"Menurut standar C, sizeof(char) selalu 1."],
+["Apa output kode ini?",["0","1","2","B"],1,"enum memberi nilai berurutan mulai dari 0: A=0, B=1, C=2.","enum {A, B, C};\nprintf(\"%d\", B);"],
+["Untuk mengakses anggota struct dari variabel biasa dipakai tanda...",["->","."," ::","#"],1,"Pakai titik: mhs.nama. Panah -> dipakai untuk pointer ke struct."],
+["Fungsi typedef adalah...",["Membuat nama baru untuk sebuah tipe","Menghapus tipe","Membuat loop","Menghitung ukuran"],0,"Contoh: typedef unsigned int uint;"],
+["#define PI 3.14 disebut...",["Fungsi","Makro","Struct","Pointer"],1,"Preprocessor mengganti PI dengan 3.14 sebelum kompilasi."],
+["Hasil dari 2 + 3 * 4 % 5 adalah...",["4","6","14","2"],0,"3*4 = 12, 12 % 5 = 2, lalu 2 + 2 = 4."],
+["Apa nilai i setelah loop selesai?",["3","4","2","5"],1,"i naik terus sampai pengecekan 3 < 3 gagal, saat itu i sudah jadi 4.","int i = 0;\nwhile(i++ < 3);\nprintf(\"%d\", i);"],
+["Apa output kode ini?",["A","65","a","Error"],1,"Karakter disimpan sebagai angka kode ASCII. 'A' = 65.","char c = 'A';\nprintf(\"%d\", c);"],
+["Apa output kode ini?",["a","b","98 saja","c"],1,"'a' + 1 = 98, dan %c mencetaknya sebagai 'b'.","printf(\"%c\", 'a' + 1);"],
+["Berapa nilai a?",["7","3","4","0"],1,"a %= 4 sama dengan a = a % 4, hasilnya 3.","int a = 7;\na %= 4;"],
+["Fungsi dengan tipe kembalian void artinya...",["Mengembalikan 0","Tidak mengembalikan nilai","Mengembalikan teks","Tidak boleh dipanggil"],1,"void = tidak ada nilai yang dikembalikan."]
+],
+hard:[
+["Apa output kode ini?",["10","20","30","Error"],2,"p + 2 menunjuk elemen ke-3, nilainya 30.","int a[] = {10, 20, 30};\nint *p = a;\nprintf(\"%d\", *(p + 2));"],
+["Pada int *p, p++ memindahkan pointer sebanyak...",["1 byte","sizeof(int) byte","2 byte","Tidak berubah"],1,"Aritmetika pointer dihitung per ukuran tipe yang ditunjuk."],
+["Cara menghitung jumlah elemen array arr adalah...",["sizeof(arr)","sizeof(arr)/sizeof(arr[0])","strlen(arr)","length(arr)"],1,"Ukuran total dibagi ukuran satu elemen."],
+["Apa output kode ini?",["5","9","Alamat x","Error"],1,"*p = 9 mengubah nilai x lewat pointer.","int x = 5;\nint *p = &x;\n*p = 9;\nprintf(\"%d\", x);"],
+["Pointer ke pointer int dideklarasikan dengan...",["int *p;","int **pp;","int &pp;","int p**;"],1,"Dua bintang artinya pointer yang menunjuk pointer."],
+["Apa kesalahan umum setelah memakai malloc?",["Lupa memanggil free (memory leak)","Memakai if","Memakai return","Memakai printf"],0,"Memori heap yang tidak di-free akan bocor."],
+["Apa akibat memakai pointer setelah free(p)?",["Aman","Undefined behavior (use-after-free)","Otomatis di-malloc ulang","Program pasti berhenti dengan pesan jelas"],1,"Memori sudah dikembalikan, mengaksesnya adalah undefined behavior."],
+["Apa yang salah dari kode ini?",["Tidak ada","Mengubah string literal adalah undefined behavior","Salah tipe","Kurang titik koma"],1,"String literal berada di memori read-only. Pakai char s[] = \"hi\"; kalau mau diubah.","char *s = \"hi\";\ns[0] = 'H';"],
+["Apa output kode ini?",["4.0","5.0","4","2.5"],0,"5/2 = 2 (int), lalu 2 * 2.0 = 4.0.","printf(\"%.1f\", 5 / 2 * 2.0);"],
+["printf(\"%d %d\", i++, i++); termasuk...",["Aman, selalu 5 6","Undefined/unspecified behavior","Selalu 6 5","Compile error pasti"],1,"Urutan evaluasi argumen tidak ditentukan dan memodifikasi variabel dua kali tanpa sequence point berbahaya."],
+["Deklarasi pointer ke fungsi yang menerima dua int dan mengembalikan int adalah...",["int *fp(int, int);","int (*fp)(int, int);","int fp*(int, int);","fp int(int, int);"],1,"Kurung di sekitar *fp penting agar ini pointer ke fungsi."],
+["Pada umumnya, sizeof(struct {char a; int b;}) bernilai...",["5","8","4","6"],1,"Padding ditambahkan agar int rata di alamat kelipatan 4, jadi total 8."],
+["Pada umumnya, sizeof(union {int i; char c;}) adalah...",["5","4","1","8"],1,"Ukuran union sebesar anggota terbesar, yaitu int (4)."],
+["static pada variabel global berarti...",["Terlihat hanya di file itu","Tidak bisa diubah","Disimpan di register","Otomatis 1"],0,"static memberi internal linkage: hanya terlihat dalam satu file."],
+["volatile berarti...",["Variabel tidak boleh diubah","Compiler tidak boleh mengoptimalkan akses variabel itu","Variabel disimpan di heap","Variabel otomatis nol"],1,"Dipakai untuk variabel yang bisa berubah di luar kendali program, misalnya register hardware."],
+["Apa bahaya strcpy tanpa cek panjang?",["Lambat","Buffer overflow","Tidak ada","Salah tipe data"],1,"Kalau sumber lebih panjang dari tujuan, data menimpa memori lain."],
+["Pada int * const p = &a; yang konstan adalah...",["Nilai yang ditunjuk","Pointer p-nya (tidak bisa menunjuk ke tempat lain)","Keduanya","Tidak ada"],1,"const setelah * membuat pointer-nya tidak bisa diubah."],
+["Pernyataan yang benar tentang a[i] dan i[a] adalah...",["Keduanya salah","Keduanya valid dan sama","Hanya a[i] valid","i[a] membuat error"],1,"a[i] adalah *(a+i), dan penjumlahan itu komutatif."],
+["Apa output kode ini?",["255","256","0","Error"],2,"unsigned char hanya sampai 255, lalu wrap-around ke 0.","unsigned char c = 255;\nc++;\nprintf(\"%d\", c);"],
+["Apa output kode ini?",["0","1","65","32"],1,"'a' (97) lebih besar dari 'A' (65), jadi benar = 1.","printf(\"%d\", 'a' > 'A');"],
+["Apa output kode ini?",["Tidak ada","Y","N","Error"],1,"x = 5 adalah assignment, nilainya 5 (benar), jadi masuk if.","int x = 0;\nif(x = 5) printf(\"Y\");\nelse printf(\"N\");"],
+["Berapa fib(6) jika fib(0)=0 dan fib(1)=1?",["5","8","13","6"],1,"Deret: 0,1,1,2,3,5,8 sehingga fib(6) = 8."],
+["Berapa hasil 12 & (12 - 1)?",["8","4","0","11"],0,"1100 & 1011 = 1000 = 8. Trik ini menghapus bit 1 paling kanan."],
+["Berapa hasil ~5 pada int 32-bit (two's complement)?",["-5","-6","6","0"],1,"~x = -x - 1, jadi ~5 = -6."],
+["Pada C99 ke atas, hasil -7 / 2 adalah...",["-4","-3","-3.5","3"],1,"Pembagian int dipotong ke arah nol: -3. Sisa -7 % 2 adalah -1."],
+["Pada sistem 64-bit umumnya, sizeof(int *) adalah...",["2","4","8","16"],2,"Pointer 64-bit berukuran 8 byte."],
+["Fungsi realloc dipakai untuk...",["Mengubah ukuran blok memori yang sudah dialokasikan","Menghapus variabel","Menyalin string","Membuka file"],0,"realloc memperbesar atau memperkecil blok malloc."],
+["Apa hasil SQ(2+3)?",["25","11","10","Error"],1,"Makro diganti teks: 2+3*2+3 = 11. Perlu kurung: ((x)*(x)).","#define SQ(x) x*x\nprintf(\"%d\", SQ(2+3));"],
+["Di dalam fungsi, sizeof(parameter_array) memberi ukuran...",["Seluruh array","Ukuran pointer","0","Error"],1,"Array yang dikirim ke fungsi 'meluruh' menjadi pointer."],
+["Kenapa printf(\"%s\", arr) berbahaya pada char arr[3] = \"abc\"; ?",["Tidak ada masalah","Tidak ada karakter null di akhir","Tipe salah","Terlalu panjang"],1,"Array 3 byte penuh oleh abc sehingga tidak muat '\\0', %s membaca melewati batas."],
+["Apa masalah fungsi yang mengembalikan alamat variabel lokalnya?",["Aman","Dangling pointer, variabel sudah hilang setelah fungsi selesai","Lambat","Tidak bisa dikompilasi"],1,"Variabel lokal hidup di stack dan dibersihkan saat fungsi berakhir."],
+["Apa output kode ini?",["10","Alamat","Error","0"],0,"**q mengikuti dua pointer sampai ke nilai a.","int a = 10;\nint *p = &a;\nint **q = &p;\nprintf(\"%d\", **q);"],
+["Operator -> dipakai untuk...",["Mengakses anggota struct lewat pointer","Menunjuk ke fungsi","Mengakses array","Membuat komentar"],0,"p->x sama dengan (*p).x."],
+["Apa output kode ini?",["0","1","2","Error"],1,"0 && ... bernilai salah lebih dulu, sisi kanan (b++) tidak pernah dievaluasi (short-circuit).","int b = 1;\n0 && b++;\nprintf(\"%d\", b);"],
+["Ekspresi switch di C boleh bertipe...",["Integer/char","String","float","Semua tipe"],0,"switch hanya menerima tipe bilangan bulat (termasuk char dan enum)."],
+["printf(\"abc\") mengembalikan nilai...",["0","3","1","Tidak ada nilai"],1,"printf mengembalikan jumlah karakter yang dicetak."],
+["Hasil dari 1 << 2 + 1 adalah...",["5","8","7","3"],1,"+ lebih tinggi prioritasnya dari <<, jadi 1 << 3 = 8."],
+["Berapa nilai x?",["1","2","3","Error"],2,"Operator koma mengevaluasi dari kiri ke kanan dan memakai nilai terakhir.","int x = (1, 2, 3);"],
+["Variabel lokal biasa umumnya disimpan di...",["Heap","Stack","File","Register saja"],1,"Variabel lokal di stack, hasil malloc di heap."],
+["Kenapa getchar() mengembalikan int, bukan char?",["Supaya bisa menampung EOF (-1)","Supaya lebih cepat","Karena aturan lama saja","Tidak ada alasan"],0,"EOF bernilai negatif yang tidak bisa dibedakan dari karakter jika dipaksa ke char."]
+]
+};
+const MODES={
+  easy:{name:"Gampang",ic:"🍌",desc:"Dasar-dasar C"},
+  mid:{name:"Sedang",ic:"🍌🍌",desc:"Fungsi, array, pointer dasar, tebak output"},
+  hard:{name:"Sulit",ic:"🍌🍌🍌",desc:"Pointer, memori, undefined behavior, trik bit"}
+};
+const PER=20;
+const $=id=>document.getElementById(id);
+
+/* riwayat soal yang sudah keluar (disimpan di browser jika bisa) */
+let seen={easy:[],mid:[],hard:[]};
+try{const s=JSON.parse(localStorage.getItem("pisangC_seen")||"null");if(s&&s.easy&&s.mid&&s.hard)seen=s}catch(e){}
+function saveSeen(){try{localStorage.setItem("pisangC_seen",JSON.stringify(seen))}catch(e){}}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+let mode=null,set=[],i=0,score=0,done=false;
+
+function renderMenu(note){
+  const box=$("modes");box.innerHTML="";
+  Object.keys(MODES).forEach(k=>{
+    const left=BANK[k].length-seen[k].length;
+    const b=document.createElement("button");b.className="mode";
+    b.innerHTML='<span class="ic">'+MODES[k].ic+'</span><span><b>'+MODES[k].name+'</b><small>'+MODES[k].desc+' · soal baru tersisa: '+left+'</small></span>';
+    b.onclick=()=>start(k);box.append(b);
+  });
+  const n=$("resetnote");
+  if(note){n.textContent=note;n.classList.remove("hide")}else n.classList.add("hide");
+  $("menu").classList.remove("hide");$("play").classList.add("hide");
+}
+function start(k){
+  mode=k;
+  let ids=BANK[k].map((_,n)=>n).filter(n=>!seen[k].includes(n));
+  let note="";
+  if(ids.length<PER){
+    /* soal baru hampir habis: pakai sisa soal baru, lalu isi dengan soal lama */
+    const old=BANK[k].map((_,n)=>n).filter(n=>seen[k].includes(n));
+    ids=ids.concat(shuffle(old).slice(0,PER-ids.length));
+    seen[k]=[];
+  } else ids=shuffle(ids).slice(0,PER);
+  seen[k]=seen[k].concat(ids.filter(n=>!seen[k].includes(n)));saveSeen();
+  set=ids.map(n=>{
+    const [q,opts,a,e,c]=BANK[k][n];
+    const order=shuffle(opts.map((_,x)=>x));
+    return {q,c,e,o:order.map(x=>opts[x]),a:order.indexOf(a)};
+  });
+  i=0;score=0;
+  $("menu").classList.add("hide");$("play").classList.remove("hide");
+  show();
+}
+function show(){
+  const q=set[i];done=false;
+  $("no").textContent=MODES[mode].name+" · Soal "+(i+1)+" / "+set.length;
+  $("sc").textContent="Skor: "+score;
+  $("pb").style.width=(i/set.length*100)+"%";
+  $("next").classList.add("hide");
+  const box=$("qbox");box.innerHTML="";
+  const p=document.createElement("div");p.className="q";p.textContent=q.q;box.append(p);
+  if(q.c){const pre=document.createElement("pre");pre.className="snip";pre.textContent=q.c;box.append(pre)}
+  q.o.forEach((t,k)=>{
+    const b=document.createElement("button");b.className="opt";b.textContent="ABCD"[k]+". "+t;
+    b.onclick=()=>pick(k);box.append(b);
+  });
+}
+function pick(k){
+  if(done)return;done=true;
+  const q=set[i],btns=[...document.querySelectorAll(".opt")];
+  btns.forEach((b,n)=>{b.disabled=true;if(n===q.a)b.classList.add("ok");});
+  q.p=k;
+  if(k===q.a)score++;else btns[k].classList.add("bad");
+  const e=document.createElement("div");e.className="exp";
+  e.textContent=(k===q.a?"Benar! 🎉 ":"Belum tepat 🍌 ")+q.e;
+  $("qbox").append(e);
+  $("sc").textContent="Skor: "+score;
+  $("next").textContent=i===set.length-1?"Lihat hasil":"Lanjut ➜";
+  $("next").classList.remove("hide");
+}
+$("next").onclick=()=>{
+  i++;
+  if(i>=set.length){
+    $("pb").style.width="100%";
+    const pct=Math.round(score/set.length*100);
+    const msg=pct>=80?"Hebat banget! 🍌🍌🍌":pct>=50?"Lumayan, ayo coba lagi!":"Semangat, belajar lagi yuk!";
+    $("qbox").innerHTML='<div class="score"><div style="font-size:48px">🏆</div><div class="big">'+score+' / '+set.length+'</div><p style="font-weight:800;font-size:18px">✅ Benar: '+score+' &nbsp;·&nbsp; ❌ Salah: '+(set.length-score)+'</p><p>'+msg+'</p><p class="sub">Selanjutnya pilih mode lagi ya. Soalnya akan baru!</p><button class="go" id="again">Pilih mode</button></div>';
+    renderReview();
+    $("next").classList.add("hide");
+    $("again").onclick=()=>renderMenu();
+  } else show();
+};
+function renderReview(){
+  const box=$("qbox"),wrong=set.filter(q=>q.p!==q.a);
+  const h=document.createElement("h3");h.style.margin="18px 0 6px";
+  h.textContent=wrong.length?"📝 Pembahasan jawaban yang salah":"🎉 Semua jawabanmu benar!";
+  box.append(h);
+  wrong.forEach(q=>{
+    const d=document.createElement("div");d.className="card";d.style.cssText="margin:10px 0;padding:12px 14px;box-shadow:none";
+    const p=document.createElement("div");p.className="q";p.style.fontSize="16px";p.textContent=q.q;d.append(p);
+    if(q.c){const pre=document.createElement("pre");pre.className="snip";pre.textContent=q.c;d.append(pre)}
+    const a=document.createElement("div");a.style.cssText="color:var(--bad);font-weight:800";a.textContent="❌ Jawabanmu: "+q.o[q.p];d.append(a);
+    const b=document.createElement("div");b.style.cssText="color:var(--ok);font-weight:800;margin-top:2px";b.textContent="✅ Jawaban benar: "+q.o[q.a];d.append(b);
+    const e=document.createElement("div");e.className="exp";e.textContent="Kenapa kurang tepat: "+q.e;d.append(e);
+    box.append(d);
+  });
+}
+$("quit").onclick=()=>renderMenu();
+renderMenu();
+
+/* musik latar */
+const audio=new Audio();audio.loop=true;audio.volume=.5;
+let useFile=false,playing=false,ac=null,master=null,timer=null,step=0;
+const NOTES=[523,659,784,659,587,698,880,698,523,659,784,1046,880,784,659,587];
+function synthTick(){
+  const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime;
+  o.type="triangle";o.frequency.value=NOTES[step%NOTES.length]/2;
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.35,t+.02);g.gain.exponentialRampToValueAtTime(.001,t+.3);
+  o.connect(g);g.connect(master);o.start(t);o.stop(t+.32);step++;
+}
+function startSynth(){
+  if(!ac){ac=new(window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.connect(ac.destination)}
+  master.gain.value=$("mvol").value/100;ac.resume();
+  if(!timer)timer=setInterval(synthTick,320);
+}
+function stopSynth(){clearInterval(timer);timer=null}
+function setPlaying(p){
+  playing=p;$("mplay").setAttribute("aria-pressed",p);
+  $("mplay").textContent=p?"⏸ Jeda musik":"🎵 Putar musik";
+  if(useFile){p?audio.play().catch(()=>{playing=false;setPlaying(false)}):audio.pause()}
+  else{p?startSynth():stopSynth()}
+}
+let userPaused=false,autoDone=false;
+$("mplay").onclick=()=>{autoDone=true;userPaused=playing;setPlaying(!playing)};
+/* browser memblokir suara otomatis, jadi musik mulai pada sentuhan/klik pertama di halaman */
+function autoStart(){
+  if(autoDone)return;autoDone=true;
+  ["pointerdown","keydown","touchstart"].forEach(ev=>removeEventListener(ev,autoStart,true));
+  if(!playing&&!userPaused)setPlaying(true);
+}
+["pointerdown","keydown","touchstart"].forEach(ev=>addEventListener(ev,autoStart,true));
+addEventListener("load",()=>{ /* coba langsung main; kalau diblokir, tunggu sentuhan pertama */
+  if(useFile)return;
+  const t=new(window.AudioContext||window.webkitAudioContext)();
+  if(t.state==="running"){t.close();autoDone=true;setPlaying(true)}else t.close();
+});
+$("mvol").oninput=e=>{const v=e.target.value/100;audio.volume=v;if(master)master.gain.value=v};
+$("mfile").onchange=e=>{
+  const f=e.target.files[0];if(!f)return;
+  autoDone=true;userPaused=false;
+  stopSynth();
+  if(audio.src)URL.revokeObjectURL(audio.src);
+  audio.src=URL.createObjectURL(f);useFile=true;
+  $("mname").textContent="🎶 "+f.name.replace(/\.[^.]+$/,"");
+  setPlaying(true);
+};
+
+/* Spotify */
+function loadSpotify(url){
+  const m=/open\.spotify\.com\/(?:intl-[a-z]+\/)?(track|playlist|album|episode|show)\/([A-Za-z0-9]+)/.exec(url||"");
+  if(!m){$("spmsg").textContent="Link tidak dikenali. Contoh: https://open.spotify.com/track/xxxx";return false}
+  const f=document.createElement("iframe");
+  f.src="https://open.spotify.com/embed/"+m[1]+"/"+m[2];
+  f.width="100%";f.height=m[1]==="track"?"152":"352";f.style.border="0";f.style.borderRadius="14px";
+  f.allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";f.loading="lazy";
+  $("spbox").innerHTML="";$("spbox").append(f);
+  $("spmsg").textContent="Tekan tombol play di pemutar Spotify di atas. Login Spotify supaya lagu diputar penuh.";
+  autoDone=true;if(playing)setPlaying(false);
+  return true;
+}
+$("spgo").onclick=()=>{
+  const u=$("splink").value.trim();
+  if(loadSpotify(u)){try{localStorage.setItem("pisangC_sp",u)}catch(e){}}
+};
+try{const u=localStorage.getItem("pisangC_sp");if(u){$("splink").value=u;loadSpotify(u)}}catch(e){}
+
+/* tabs */
+function tab(n){
+  $("quiz").classList.toggle("hide",n!==1);$("code").classList.toggle("hide",n!==2);
+  $("t1").setAttribute("aria-selected",n===1);$("t2").setAttribute("aria-selected",n===2);
+}
+$("t1").onclick=()=>tab(1);$("t2").onclick=()=>tab(2);
+$("theme").onclick=()=>{
+  const r=document.documentElement;
+  const dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
+  r.dataset.theme=dark?"light":"dark";$("theme").textContent=dark?"🌙":"☀️";
+};
+
+/* editor */
+const EX={
+"Halo Dunia":`#include <stdio.h>\n\nint main() {\n    printf("Halo, Dunia!\\n");\n    return 0;\n}`,
+"Jumlah dua angka":`#include <stdio.h>\n\nint main() {\n    int a, b;\n    scanf("%d %d", &a, &b);\n    printf("Hasil: %d\\n", a + b);\n    return 0;\n}`,
+"Loop 1 sampai 5":`#include <stdio.h>\n\nint main() {\n    for (int i = 1; i <= 5; i++) {\n        printf("Pisang ke-%d\\n", i);\n    }\n    return 0;\n}`,
+"Faktorial":`#include <stdio.h>\n\nint faktorial(int n) {\n    if (n <= 1) return 1;\n    return n * faktorial(n - 1);\n}\n\nint main() {\n    int n;\n    scanf("%d", &n);\n    printf("%d! = %d\\n", n, faktorial(n));\n    return 0;\n}`
+};
+const sel=$("ex");
+Object.keys(EX).forEach(k=>{const o=document.createElement("option");o.textContent=k;sel.append(o)});
+$("src").value=EX["Halo Dunia"];
+sel.onchange=()=>{$("src").value=EX[sel.value];$("inp").value=sel.value==="Jumlah dua angka"?"3 4":sel.value==="Faktorial"?"5":""};
+$("src").addEventListener("keydown",e=>{
+  if(e.key==="Tab"){e.preventDefault();const t=e.target,s=t.selectionStart;t.value=t.value.slice(0,s)+"    "+t.value.slice(t.selectionEnd);t.selectionStart=t.selectionEnd=s+4;}
+});
+$("clr").onclick=()=>{$("out").textContent=""};
+$("run").onclick=()=>{
+  const out=$("out");
+  if(typeof JSCPP==="undefined"){out.textContent="Interpreter belum termuat. Cek koneksi internet lalu muat ulang halaman.";return}
+  const code=$("src").value.replace(/#include\s*<(stdio|stdlib|string|math|ctype)\.h>/g,"#include <c$1>");
+  let text="";
+  try{
+    const rc=JSCPP.run(code,$("inp").value,{stdio:{write:s=>{text+=s}},maxTimeout:5000});
+    out.textContent=(text||"(tidak ada output)")+"\n\n[selesai, kode keluar: "+rc+"]";
+  }catch(err){
+    out.textContent=text+"\n\n❌ Error: "+(err&&err.message?err.message:err);
+  }
+};
+</script>
+</body>
+</html>
