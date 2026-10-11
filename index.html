@@ -400,7 +400,7 @@ html,body{overflow-x:clip;max-width:100%}
 <header>
   <svg class="mascot jl big" width="96" height="96" viewBox="0 0 64 64" role="img" aria-label="Logo J"><use href="#jlogo"/></svg>
   <h1>Kuis Bahasa C</h1>
-  <p>Pilih mode, jawab 30 soal, lihat pembahasannya!</p>
+  <p>Pilih mode, jawab 25 soal, lihat pembahasannya!</p>
 </header>
 <section id="quiz" class="card">
   <div id="menu">
@@ -518,7 +518,45 @@ easy:[
 ["Kurung kurawal { } dipakai untuk...", ["Komentar", "Membungkus blok kode", "Memanggil fungsi", "Membuat string"], 1, "{ } membatasi isi fungsi, if, atau loop."],
 ["Karakter '\\0' menandai...", ["Awal string", "Akhir string", "Spasi", "Baris baru"], 1, "Karakter null menandai akhir string di C."],
 ["Apa output kode ini?", ["A", "B", "66", "Error"], 1, "'A' + 1 menjadi 'B' (kode ASCII 66), dicetak sebagai karakter.", "char c = 'A';\nprintf(\"%c\", c + 1);"],
-["Simbol untuk mengambil alamat variabel adalah...", ["*", "&", "#", "@"], 1, "&x berarti alamat memori dari x."]
+["Simbol untuk mengambil alamat variabel adalah...", ["*", "&", "#", "@"], 1, "&x berarti alamat memori dari x."],
+["Ekstensi file kode sumber C adalah...", [".c", ".cpp", ".py", ".cs"], 0, "File sumber C memakai ekstensi .c."],
+["Compiler C yang populer di Linux adalah...", ["gcc", "javac", "node", "rustc"], 0, "gcc (GNU Compiler Collection) mengompilasi kode C."],
+["Fungsi untuk membaca satu karakter dari keyboard adalah...", ["getchar()", "readchar()", "inchar()", "getkey()"], 0, "getchar() ada di stdio.h."],
+["Apa output kode ini?", ["7", "34", "a+b", "Error"], 0, "a + b = 3 + 4 = 7.", "int a = 3, b = 4;\nprintf(\"%d\", a + b);"],
+["Apa output kode ini?", ["Halo", "\"Halo\"", "printf", "Error"], 0, "printf mencetak teks di antara tanda kutip.", "printf(\"Halo\");"],
+["Hasil dari 20 / 4 pada int adalah...", ["5", "4", "6", "80"], 0, "20 dibagi 4 sama dengan 5."],
+["Hasil dari 3 + 4 * 2 adalah...", ["11", "14", "10", "24"], 0, "4*2=8 dulu, lalu 3+8=11."],
+["Hasil dari 15 % 4 adalah...", ["3", "1", "4", "0"], 0, "15 = 3*4 + 3, sisanya 3."],
+["Berapa nilai y?", ["10", "7", "25", "2"], 0, "y = 2 * 5 = 10.", "int y = 2;\ny *= 5;"],
+["Operator <= artinya...", ["Lebih kecil atau sama dengan", "Lebih besar atau sama dengan", "Tidak sama dengan", "Panah ke kiri"], 0, "<= bernilai benar bila kiri lebih kecil atau sama dengan kanan."],
+["Apa output kode ini?", ["012", "123", "0 1 2 3", "Error"], 0, "i berjalan 0, 1, 2 lalu berhenti karena i < 3.", "for(int i = 0; i < 3; i++)\n  printf(\"%d\", i);"],
+["Escape sequence untuk karakter tab adalah...", ["\\\\t", "\\\\n", "\\\\b", "\\\\r"], 0, "\\\\t menyisipkan tab horizontal."],
+["Tipe data yang cocok untuk menyimpan huruf 'Z' adalah...", ["char", "int", "float", "void"], 0, "char menyimpan satu karakter."],
+["Kata kunci untuk mengirim nilai balik dari sebuah fungsi adalah...", ["return", "give", "send", "back"], 0, "return mengakhiri fungsi dan mengirim nilainya."],
+["Kata kunci untuk melewati sisa isi loop dan lanjut ke putaran berikutnya adalah...", ["continue", "next", "skip", "pass"], 0, "continue melompat ke iterasi berikutnya."],
+["Variabel harus dideklarasikan...", ["Sebelum dipakai", "Setelah dipakai", "Di akhir program", "Tidak perlu"], 0, "C mewajibkan deklarasi sebelum variabel dipakai."],
+["Array int data[8] punya berapa elemen?", ["8", "7", "9", "16"], 0, "Angka di kurung siku adalah jumlah elemen."],
+["Index terakhir dari int data[8] adalah...", ["7", "8", "9", "0"], 0, "Index mulai dari 0, jadi 0 sampai 7."],
+["Apa yang dicek oleh if(x % 2 == 0)?", ["Apakah x genap", "Apakah x ganjil", "Apakah x nol", "Apakah x positif"], 0, "Sisa bagi 2 sama dengan 0 berarti genap."],
+["Berapa nilai n?", ["5", "20", "10", "0"], 0, "n = 10 / 2 = 5.", "int n = 10;\nn /= 2;"],
+["Fungsi untuk menyalin string adalah...", ["strcpy()", "strcat()", "strlen()", "strcmp()"], 0, "strcpy menyalin isi string sumber ke tujuan."],
+["Hasil dari 8 / 3 pada int adalah...", ["2", "3", "2.67", "0"], 0, "Pembagian int membuang bagian desimal."],
+["Apa output kode ini?", ["1", "0", "true", "5"], 0, "5 > 3 benar, nilainya 1 di C.", "printf(\"%d\", 5 > 3);"],
+["Apa output kode ini?", ["0", "1", "false", "4"], 0, "3 == 4 salah, nilainya 0 di C.", "printf(\"%d\", 3 == 4);"],
+["Berapa nilai a di akhir?", ["3", "1", "2", "4"], 0, "Dua kali a++ menambah 1 dua kali, 1 jadi 3.", "int a = 1;\na++;\na++;"],
+["Apa yang dilakukan compiler terhadap komentar?", ["Mengabaikannya", "Menjalankannya", "Mencetaknya", "Menganggap error"], 0, "Komentar hanya catatan untuk manusia."],
+["Kenapa main() bertipe int?", ["Mengembalikan status ke sistem operasi", "Supaya bisa dipakai di loop", "Agar lebih cepat", "Tidak ada alasan"], 0, "Nilai balik main dipakai OS sebagai kode status."],
+["Cara mencetak tanda kutip ganda di printf adalah...", ["\\\\\"", "\"\"", "'", "//"], 0, "Di dalam string, kutip ditulis dengan \\\\\"."],
+["Apa output kode ini?", ["A", "a", "65", "Error"], 0, "'a' dikurangi 32 jadi 'A' (97-32=65).", "char c = 'a';\nprintf(\"%c\", c - 32);"],
+["Fungsi rand() tersedia di header...", ["<stdlib.h>", "<stdio.h>", "<ctype.h>", "<time.h>"], 0, "rand dan srand ada di stdlib.h."],
+["Pada umumnya, pow(2, 3) menghasilkan nilai...", ["8", "6", "5", "9"], 0, "2 pangkat 3 sama dengan 8."],
+["Apa output kode ini?", ["B", "A", "C", "Tidak ada"], 0, "s=75 gagal di >=80 tapi lolos di >=70, jadi B.", "int s = 75;\nif(s >= 80) printf(\"A\");\nelse if(s >= 70) printf(\"B\");\nelse printf(\"C\");"],
+["Fungsi untuk mencetak string sekaligus pindah baris adalah...", ["puts()", "putc()", "print()", "write()"], 0, "puts menambahkan newline otomatis."],
+["Tipe data untuk bilangan bulat yang lebih besar dari int biasa adalah...", ["long long", "short", "tiny", "bigint"], 0, "long long minimal 64 bit."],
+["Apa output kode ini?", ["3", "2", "4", "5"], 0, "Hasil 12 / 4 adalah 3.", "printf(\"%d\", 12 / 4);"],
+["Apa output kode ini?", ["Z", "Y", "90", "z"], 0, "'X' + 2 menjadi 'Z'.", "printf(\"%c\", 'X' + 2);"],
+["Operator ?: sering disebut...", ["Operator ternary", "Operator unary", "Operator bitwise", "Operator pointer"], 0, "Ia memakai tiga operand: kondisi ? a : b."],
+["Loop for(;;) artinya...", ["Loop tanpa akhir", "Tidak jalan sama sekali", "Jalan sekali", "Error"], 0, "Tanpa kondisi, loop dianggap selalu benar."]
 ],
 mid:[
 ["Apa output kode ini?",["2.5","2.0","2","3"],1,"10/4 adalah pembagian int = 2, lalu disimpan ke float jadi 2.0.","float f = 10 / 4;\nprintf(\"%.1f\", f);"],
@@ -580,7 +618,42 @@ mid:[
 ["Apa output kode ini?", ["h", "a", "i", "Error"], 1, "s[1] adalah karakter kedua, yaitu 'a'.", "char *s = \"hai\";\nprintf(\"%c\", s[1]);"],
 ["Apa output kode ini?", ["A", "65", "97", "Error"], 1, "%d pada karakter mencetak kode ASCII-nya, 'A' = 65.", "printf(\"%d\", 'A');"],
 ["Apa output kode ini?", ["3", "6", "9", "0"], 1, "3 x 2 x 1 = 6.", "int n = 3, r = 1;\nwhile(n > 0){ r *= n; n--; }\nprintf(\"%d\", r);"],
-["Saat array dikirim ke fungsi, yang dikirim sebenarnya adalah...", ["Salinan seluruh array", "Alamat elemen pertama", "Hanya ukuran array", "Tidak bisa dikirim"], 1, "Array 'meluruh' menjadi pointer ke elemen pertama."]
+["Saat array dikirim ke fungsi, yang dikirim sebenarnya adalah...", ["Salinan seluruh array", "Alamat elemen pertama", "Hanya ukuran array", "Tidak bisa dikirim"], 1, "Array 'meluruh' menjadi pointer ke elemen pertama."],
+["Prototipe fungsi gunanya untuk...", ["Memberi tahu compiler bentuk fungsi sebelum didefinisikan", "Mempercepat fungsi", "Menghapus fungsi", "Membuat variabel global"], 0, "Prototipe memuat tipe kembalian, nama, dan parameter."],
+["Apa output kode ini?", ["9", "7", "5", "12"], 0, "tambah(3,4)=7, lalu tambah(2,7)=9.", "int tambah(int a, int b){ return a + b; }\nint main(){ printf(\"%d\", tambah(2, tambah(3, 4))); }"],
+["Apa output kode ini?", ["toga", "gato", "to", "ga"], 0, "strcat menempelkan \"ga\" di belakang \"to\".", "char a[20] = \"to\";\nstrcat(a, \"ga\");\nprintf(\"%s\", a);"],
+["Apa output kode ini?", ["5", "4", "6", "Error"], 0, "\"hello\" punya 5 karakter.", "char s[] = \"hello\";\nprintf(\"%d\", (int)strlen(s));"],
+["Apa output kode ini?", ["9", "3", "2", "14"], 0, "Variabel m menyimpan nilai terbesar yang ditemui.", "int a[] = {3, 9, 2};\nint m = a[0];\nfor(int i = 1; i < 3; i++)\n  if(a[i] > m) m = a[i];\nprintf(\"%d\", m);"],
+["Berapa nilai i setelah loop?", ["-2", "0", "2", "6"], 0, "i: 10, 6, 2, lalu -2 yang menghentikan loop.", "int i;\nfor(i = 10; i > 0; i -= 4);"],
+["Berapa nilai count di akhir?", ["10", "4", "6", "16"], 0, "Iterasi dalam berjalan 1+2+3+4 = 10 kali.", "int count = 0;\nfor(int i = 0; i < 4; i++)\n  for(int j = 0; j <= i; j++)\n    count++;"],
+["Apa output kode ini?", ["7", "0", "2", "9"], 0, "Elemen lain 0, jadi jumlahnya hanya 7.", "int a[5] = {0};\na[2] = 7;\nint s = 0;\nfor(int i = 0; i < 5; i++) s += a[i];\nprintf(\"%d\", s);"],
+["Apa output kode ini?", ["5", "4", "6", "Alamat"], 0, "(*p)++ menaikkan nilai x menjadi 5.", "int x = 4;\nint *p = &x;\n(*p)++;\nprintf(\"%d\", x);"],
+["Apa output kode ini?", ["6", "2", "4", "Error"], 0, "*(a+2) sama dengan a[2].", "int a[] = {2, 4, 6};\nprintf(\"%d\", *(a + 2));"],
+["Pada umumnya, sizeof(double) bernilai...", ["8", "4", "2", "16"], 0, "double biasanya 8 byte."],
+["Apa output kode ini?", ["1", "0", "7", "Error"], 0, "Bit paling kanan 7 (111) adalah 1, tanda ganjil.", "int a = 7;\nprintf(\"%d\", a & 1);"],
+["Apa output kode ini?", ["bc", "abc", "c", "b"], 0, "\"abc\"+1 menunjuk ke karakter kedua.", "printf(\"%s\", \"abc\" + 1);"],
+["Apa arti strcmp(\"a\", \"b\") ?", ["Nilai negatif", "Nol", "Nilai positif", "Error"], 0, "\"a\" lebih kecil dari \"b\" secara leksikografis."],
+["Apa output kode ini?", ["0", "1", "2", "Error"], 0, "2 > 4 salah, jadi && menghasilkan 0.", "int r = 5 > 3 && 2 > 4;\nprintf(\"%d\", r);"],
+["Berapa kali isi loop dijalankan?", ["3", "2", "5", "4"], 0, "n: 5, 2, 1, lalu 0 berhenti, jadi 3 kali.", "int n = 5, c = 0;\nwhile(n){ n /= 2; c++; }"],
+["Apa output kode ini?", ["9", "4", "13", "5"], 0, "Ternary memilih yang terbesar, yaitu b.", "int a = 4, b = 9;\nprintf(\"%d\", (a > b) ? a : b);"],
+["Apa output kode ini?", ["00042", "42", "0042", "000042"], 0, "%05d mengisi nol di depan sampai lebar 5.", "printf(\"%05d\", 42);"],
+["Apa output kode ini?", ["ff", "255", "FF", "0xff"], 0, "%x mencetak heksadesimal huruf kecil.", "printf(\"%x\", 255);"],
+["Apa output kode ini?", ["10", "8", "80", "Error"], 0, "%o mencetak oktal, 8 desimal = 10 oktal.", "printf(\"%o\", 8);"],
+["Apa output kode ini?", ["aXc", "abc", "Xbc", "Error"], 0, "Elemen index 1 diganti X.", "char s[] = \"abc\";\ns[1] = 'X';\nprintf(\"%s\", s);"],
+["Apa output kode ini?", ["3", "1", "2", "4"], 0, "a[1][0] adalah baris kedua kolom pertama.", "int a[2][2] = {{1,2},{3,4}};\nprintf(\"%d\", a[1][0]);"],
+["Apa output kode ini?", ["2", "1", "3", "Error"], 0, "x lokal di main menutupi x global.", "int x = 1;\nint main(){ int x = 2; printf(\"%d\", x); }"],
+["Fungsi aman untuk membaca satu baris teks dengan batas ukuran adalah...", ["fgets()", "gets()", "scanf(\"%s\")", "getline_unsafe()"], 0, "fgets menerima ukuran buffer sehingga tidak overflow."],
+["fopen dengan mode \"w\" artinya...", ["Tulis, dan isi lama dihapus", "Baca saja", "Tambah di akhir", "Baca dan tulis tanpa hapus"], 0, "Mode \"w\" membuat atau mengosongkan file."],
+["Fungsi fclose() dipakai untuk...", ["Menutup file", "Menghapus file", "Membuka file", "Menyalin file"], 0, "fclose melepas file yang dibuka fopen."],
+["Cara menghitung jumlah elemen array int a[6] tanpa menulis angka 6 adalah...", ["sizeof(a) / sizeof(a[0])", "sizeof(a)", "strlen(a)", "len(a)"], 0, "Ukuran total dibagi ukuran satu elemen."],
+["Apa output kode ini?", ["12", "7", "34", "Error"], 0, "p.x * p.y = 3 * 4 = 12.", "struct Titik { int x, y; };\nstruct Titik p = {3, 4};\nprintf(\"%d\", p.x * p.y);"],
+["Jika p pointer ke struct, p->x ekuivalen dengan...", ["(*p).x", "*p.x", "&p.x", "p.&x"], 0, "-> adalah singkatan dari dereferensi lalu titik."],
+["Apa output kode ini?", ["5", "Tidak ada", "0", "Error"], 0, "do-while menjalankan isi sekali sebelum cek kondisi.", "int i = 5;\ndo { printf(\"%d\", i); } while(i < 3);"],
+["Apa output kode ini?", ["AB", "A", "B", "ABC"], 0, "Tanpa break di case 1, eksekusi jatuh ke case 2.", "switch(1){\n  case 1: printf(\"A\");\n  case 2: printf(\"B\"); break;\n  case 3: printf(\"C\");\n}"],
+["Berapa nilai f(4)?", ["10", "4", "24", "0"], 0, "4+3+2+1 = 10.", "int f(int n){ return n <= 0 ? 0 : n + f(n - 1); }"],
+["Apa output kode ini?", ["43", "42", "421", "Error"], 0, "atoi mengubah \"42\" jadi int 42, lalu ditambah 1.", "printf(\"%d\", atoi(\"42\") + 1);"],
+["Apa output kode ini?", ["5", "53", "0", "Error"], 0, "'0' + 5 menghasilkan karakter '5'.", "char c = '0' + 5;\nprintf(\"%c\", c);"],
+["Untuk apa srand(time(NULL)) dipanggil?", ["Agar urutan angka acak berbeda tiap program dijalankan", "Agar rand lebih cepat", "Agar rand menghasilkan 0", "Agar program berhenti"], 0, "Waktu dipakai sebagai seed yang selalu berubah."]
 ],
 hard:[
 ["Apa output kode ini?",["10","20","30","Error"],2,"p + 2 menunjuk elemen ke-3, nilainya 30.","int a[] = {10, 20, 30};\nint *p = a;\nprintf(\"%d\", *(p + 2));"],
@@ -642,7 +715,46 @@ hard:[
 ["Apa output kode ini?", ["20", "14", "24", "9"], 1, "Makro hanya mengganti teks: 2+3*4 = 14, bukan (2+3)*4.", "#define KALI(a,b) a*b\nprintf(\"%d\", KALI(2+3, 4));"],
 ["Fungsi yang dideklarasikan static di level file artinya...", ["Hanya terlihat di file itu", "Berjalan lebih cepat", "Tidak bisa dipanggil", "Otomatis dijalankan"], 0, "static membatasi visibilitas fungsi ke file sumbernya."],
 ["Apa output kode ini?", ["Y", "N", "Error", "Tidak ada"], 0, "x = 5 adalah assignment (bukan perbandingan), nilainya 5 (benar), jadi Y.", "int x = 0;\nif(x = 5) printf(\"Y\");\nelse printf(\"N\");"],
-["Untuk apa fungsi rekursi wajib punya base case?", ["Supaya berhenti dan tidak stack overflow", "Supaya lebih cepat", "Supaya memakai pointer", "Tidak wajib"], 0, "Tanpa kondisi berhenti, fungsi memanggil dirinya tanpa akhir."]
+["Untuk apa fungsi rekursi wajib punya base case?", ["Supaya berhenti dan tidak stack overflow", "Supaya lebih cepat", "Supaya memakai pointer", "Tidak wajib"], 0, "Tanpa kondisi berhenti, fungsi memanggil dirinya tanpa akhir."],
+["Apa output kode ini?", ["1", "2", "3", "Alamat"], 0, "p++ naik setelah nilai lama dibaca, jadi *p++ bernilai 1.", "int a[] = {1, 2, 3};\nint *p = a;\nprintf(\"%d\", *p++);"],
+["Apa output kode ini?", ["2", "8", "1", "Error"], 0, "Selisih dua pointer dihitung dalam elemen, bukan byte.", "int a[] = {10, 20, 30};\nint *p = a + 2;\nprintf(\"%d\", (int)(p - a));"],
+["Pada umumnya, sizeof(int[10]) bernilai...", ["40", "10", "20", "80"], 0, "10 elemen kali 4 byte."],
+["Apa output kode ini?", ["4", "3", "Error", "0"], 0, "Literal \"abc\" menyimpan 3 huruf plus '\\\\0'.", "printf(\"%d\", (int)sizeof(\"abc\"));"],
+["Apa output kode ini?", ["98", "97", "b", "Error"], 0, "*s adalah 'a' (97), ditambah 1 jadi 98.", "char *s = \"abc\";\nprintf(\"%d\", *s + 1);"],
+["Pada umumnya, (char)300 bernilai...", ["44", "300", "0", "255"], 0, "300 mod 256 = 44."],
+["Apa hasil 12 & -12?", ["4", "12", "0", "-12"], 0, "Ekspresi x & -x mengambil bit 1 paling kanan, yaitu 4."],
+["Apa hasil dari x ^ x untuk sembarang int x?", ["0", "x", "1", "-1"], 0, "XOR bilangan dengan dirinya sendiri selalu 0."],
+["Hasil dari 0xF0 >> 4 adalah...", ["15", "240", "0", "16"], 0, "11110000 digeser 4 bit menjadi 1111 = 15."],
+["Berapa nilai ~0 pada int?", ["-1", "0", "1", "255"], 0, "Semua bit menjadi 1, itu -1 di two's complement."],
+["Hasil dari 5 ^ 5 ^ 7 adalah...", ["7", "0", "5", "2"], 0, "5 ^ 5 = 0, lalu 0 ^ 7 = 7."],
+["Cara memeriksa apakah bit ke-n dari x menyala adalah...", ["(x >> n) & 1", "x & n", "x | n", "x ^ n"], 0, "Geser bit target ke posisi 0 lalu AND dengan 1."],
+["Cara mematikan bit ke-n dari x adalah...", ["x & ~(1 << n)", "x | (1 << n)", "x ^ (1 << n)", "x & (1 << n)"], 0, "Mask ~(1<<n) bernilai 0 hanya di bit target."],
+["Cara membalik (toggle) bit ke-n dari x adalah...", ["x ^ (1 << n)", "x & (1 << n)", "x | (1 << n)", "~x"], 0, "XOR dengan bit 1 membalik bit tersebut."],
+["Apa output kode ini?", ["3", "2", "1", "Error"], 0, "2[a] sama dengan a[2] karena a[i] ≡ *(a+i).", "int a[3] = {1, 2, 3};\nprintf(\"%d\", 2[a]);"],
+["Berapa nilai f(5)?", ["5", "8", "3", "15"], 0, "Deret Fibonacci: 0,1,1,2,3,5.", "int f(int n){ return n < 2 ? n : f(n-1) + f(n-2); }"],
+["Berapa nilai gcd(48, 18)?", ["6", "12", "3", "18"], 0, "48,18 -> 18,12 -> 12,6 -> 6,0 jadi 6.", "int gcd(int a, int b){ return b == 0 ? a : gcd(b, a % b); }"],
+["Apa output kode ini?", ["25", "5", "10", "Error"], 0, "f menunjuk ke kuadrat, jadi f(5) = 25.", "int kuadrat(int n){ return n * n; }\nint main(){ int (*f)(int) = kuadrat; printf(\"%d\", f(5)); }"],
+["Beda calloc dengan malloc adalah...", ["calloc mengisi memori dengan nol", "calloc lebih besar", "calloc tidak perlu free", "calloc hanya untuk char"], 0, "calloc(n, size) mem-nol-kan blok yang dialokasikan."],
+["Untuk menyalin memori yang area asal dan tujuannya tumpang tindih, fungsi yang aman adalah...", ["memmove", "memcpy", "strcpy", "memset"], 0, "memcpy tidak menjamin hasil jika area saling tumpang tindih."],
+["Apa output kode ini?", ["2 10", "10 10", "2 2", "Error"], 0, "strlen menghitung sampai '\\\\0', sizeof memberi ukuran seluruh array.", "char s[10] = \"hi\";\nprintf(\"%d %d\", (int)strlen(s), (int)sizeof(s));"],
+["Kata kunci restrict pada pointer berarti...", ["Janji bahwa tidak ada pointer lain yang menunjuk ke data sama", "Pointer tidak boleh diubah", "Pointer hanya baca", "Pointer otomatis di-free"], 0, "Ini membantu compiler mengoptimasi."],
+["Perilaku dari i = i++; adalah...", ["Undefined behavior", "Selalu i tetap", "Selalu i bertambah 1", "Error compile"], 0, "Dua modifikasi i tanpa sequence point tidak terdefinisi."],
+["Apa output kode ini?", ["2", "1", "3", "Error"], 0, "n[1] adalah \"bc\", panjangnya 2.", "char *n[] = {\"a\", \"bc\"};\nprintf(\"%d\", (int)strlen(n[1]));"],
+["Apa yang terjadi saat men-dereference pointer NULL?", ["Undefined behavior, biasanya segmentation fault", "Mengembalikan 0", "Mengembalikan alamat 0", "Compiler otomatis memperbaiki"], 0, "Mengakses alamat 0 tidak valid."],
+["Apa output kode ini?", ["15", "8", "17", "Error"], 0, "07 oktal = 7 dan 010 oktal = 8.", "printf(\"%d\", 07 + 010);"],
+["Apa output kode ini?", ["31", "1F", "15", "Error"], 0, "0x1F heksadesimal bernilai 31.", "printf(\"%d\", 0x1F);"],
+["Apa output kode ini (int 32-bit)?", ["4294967291", "-5", "5", "0"], 0, "Unsigned melilit: 2^32 - 5.", "printf(\"%u\", 5u - 10);"],
+["Apa output kode ini?", ["0", "1", "-1", "Error"], 0, "-1 diubah ke unsigned jadi sangat besar, lebih besar dari 1u.", "printf(\"%d\", -1 < 1u);"],
+["Apa output kode ini?", ["A", "a", "32", "Error"], 0, "XOR dengan 32 membalik bit huruf besar/kecil.", "char c = 'a';\nc ^= 32;\nprintf(\"%c\", c);"],
+["Apa itu dangling pointer?", ["Pointer ke memori yang sudah tidak valid", "Pointer bernilai NULL", "Pointer ke fungsi", "Pointer const"], 0, "Contohnya pointer sesudah free()."],
+["Apa yang terjadi pada double free (free dua kali pada pointer yang sama)?", ["Undefined behavior", "Aman", "Memori dua kali dibebaskan dengan baik", "Compile error"], 0, "Double free bisa merusak heap."],
+["Memory leak terjadi ketika...", ["Memori hasil malloc tidak pernah di-free", "Pointer bernilai NULL", "Array terlalu besar", "Fungsi rekursi berhenti"], 0, "Memori terpakai tanpa bisa dilepas."],
+["Apa itu buffer overflow?", ["Menulis melewati batas array/buffer", "Array kosong", "Pointer NULL", "Loop tak berhingga"], 0, "Data menimpa memori di sebelah buffer."],
+["Apa yang terjadi bila int melewati INT_MAX (signed overflow)?", ["Undefined behavior", "Selalu melilit ke nilai minimum", "Selalu error compile", "Selalu jadi 0"], 0, "Standar C tidak mendefinisikan overflow signed."],
+["Apa output kode ini?", ["11", "10", "1", "Error"], 0, "*p adalah 10, ditambah 1 jadi 11.", "int x = 10;\nint *p = &x;\nprintf(\"%d\", *p + 1);"],
+["Pada Linux 64-bit, sizeof(long) umumnya...", ["8", "4", "2", "16"], 0, "Model LP64 membuat long 8 byte."],
+["Apa output kode ini?", ["6", "5", "4", "7"], 0, "Setelah menggeser, bit 1 paling kanan terjadi di posisi 1 dan 2: 6 = 110.", "printf(\"%d\", 3 << 1);"],
+["Pada int *p, ekspresi p + 3 menunjuk ke...", ["3 elemen int setelah p", "3 byte setelah p", "3 alamat acak", "Nilai p ditambah 3"], 0, "Aritmetika pointer berskala ukuran tipe."]
 ]
 };
 const MODES={
@@ -650,7 +762,7 @@ const MODES={
   mid:{name:"Sedang",ic:"🍌🍌",desc:"Fungsi, array, pointer dasar, tebak output"},
   hard:{name:"Sulit",ic:"🍌🍌🍌",desc:"Pointer, memori, undefined behavior, trik bit"}
 };
-const PER=30;
+const PER=25;
 const $=id=>document.getElementById(id);
 
 /* riwayat soal yang sudah keluar (disimpan di browser jika bisa) */
