@@ -1,0 +1,1137 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Belajar Bahasa C</title>
+<script>
+/* ===== PENGATURAN: tempel link Google Apps Script (yang berakhiran /exec) di antara tanda kutip =====
+   Kalau dikosongkan, nama hanya tersimpan di perangkat pengunjung dan tidak dikirim ke siapa pun. */
+window.NAMA_ENDPOINT="https://script.google.com/macros/s/AKfycbzE0bdeHYK2dTcuM0O1HxIyWsdbb5qvftutV2Ho1gni2UEx5pYvRc9zUatJA_tJ7e3_/exec";
+/* Notifikasi HP lewat ntfy.sh: pasang app ntfy lalu subscribe ke topic ini. Kosongkan untuk mematikan. */
+window.NTFY_TOPIC="belajarc-14vfk1vvqmrw3i";
+</script>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%232cf0ff'/%3E%3Cstop offset='1' stop-color='%232a76ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg transform='translate(-2 0)'%3E%3Cpath d='M24 10H42V38Q42 54 28 54Q20 54 15 47L21 41Q24 46 28 46Q32 46 32 38V16H24Z' fill='%2307307f' transform='translate(2 2.5)'/%3E%3Cpath d='M24 10H42V38Q42 54 28 54Q20 54 15 47L21 41Q24 46 28 46Q32 46 32 38V16H24Z' fill='url(%23a)'/%3E%3Cpath d='M42 13C46 14 49 11 52 5C52 10 55 11 59 9C56 14 50 16 46 18C45 16 43 15 42 15ZM42 21C47 22 51 19 55 16C54 21 57 22 61 21C57 26 50 27 46 28C45 25 43 24 42 24Z' fill='%2377f3ff'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+
+:root{--bg:#fff6c9;--card:#fffdf0;--ink:#2b2a33;--muted:#6b6a75;--yellow:#ffd93b;--yellow2:#ffc400;--blue:#2f6fcf;--blue2:#1f4f9c;--ok:#2e9e5b;--bad:#e5484d;--line:#f0dc7a;--code:#1d2a44;--codeink:#fdf3b0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b2236;--card:#252e47;--ink:#fff3b8;--muted:#b9bfd4;--line:#3a456a;--code:#10172a}}
+:root[data-theme="dark"]{--bg:#1b2236;--card:#252e47;--ink:#fff3b8;--muted:#b9bfd4;--line:#3a456a;--code:#10172a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Nunito","Trebuchet MS",system-ui,sans-serif;line-height:1.5}
+.wrap{max-width:860px;margin:0 auto;padding:16px}
+header{text-align:center;padding:20px 0 8px}
+header h1{margin:0;font-size:clamp(26px,6vw,40px);color:var(--blue)}
+:root[data-theme="dark"] header h1{color:var(--yellow)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) header h1{color:var(--yellow)}}
+header p{margin:4px 0 0;color:var(--muted)}
+.mascot{font-size:56px;animation:bob 2s ease-in-out infinite;display:inline-block}
+@keyframes bob{50%{transform:translateY(-8px) rotate(4deg)}}
+@media (prefers-reduced-motion:reduce){.mascot{animation:none}}
+.tabs{display:flex;gap:8px;justify-content:center;margin:14px 0}
+.tab{border:3px solid var(--blue);background:var(--card);color:var(--blue);font:inherit;font-weight:800;padding:10px 18px;border-radius:999px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--blue);color:#fff}
+.card{background:var(--card);border:3px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 6px 0 var(--line)}
+.bar{height:12px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:12px}
+.bar i{display:block;height:100%;background:var(--blue);width:0;transition:width .3s}
+.meta{display:flex;justify-content:space-between;color:var(--muted);font-weight:700;font-size:14px}
+.q{font-size:19px;font-weight:800;margin:10px 0}
+pre.snip,pre.out{background:var(--code);color:var(--codeink);padding:12px;border-radius:14px;overflow:auto;font:14px/1.5 ui-monospace,Consolas,monospace;margin:8px 0;white-space:pre-wrap}
+.opt{display:block;width:100%;text-align:left;font:inherit;background:var(--card);color:var(--ink);border:3px solid var(--line);border-radius:16px;padding:12px 14px;margin:8px 0;cursor:pointer;font-weight:700}
+.opt:hover:not(:disabled){border-color:var(--blue)}
+.opt.ok{border-color:var(--ok);background:rgba(46,158,91,.18)}
+.opt.bad{border-color:var(--bad);background:rgba(229,72,77,.18)}
+.opt:disabled{cursor:default}
+.exp{margin-top:10px;padding:10px 12px;border-radius:14px;background:rgba(255,217,59,.28);font-weight:600}
+button.go{background:var(--yellow);color:#2b2a33;border:3px solid var(--yellow2);font:inherit;font-weight:900;padding:10px 20px;border-radius:999px;cursor:pointer;box-shadow:0 4px 0 var(--yellow2)}
+button.go:active{transform:translateY(3px);box-shadow:none}
+button.alt{background:var(--card);color:var(--blue);border:3px solid var(--blue);font:inherit;font-weight:800;padding:8px 14px;border-radius:999px;cursor:pointer}
+:root[data-theme="dark"] button.alt{color:var(--yellow);border-color:var(--yellow)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.sp{flex:1}
+textarea{width:100%;background:var(--code);color:var(--codeink);border:3px solid var(--line);border-radius:14px;padding:12px;font:14px/1.5 ui-monospace,Consolas,monospace;resize:vertical;tab-size:4}
+label{font-weight:800;display:block;margin-top:10px}
+.score{text-align:center}
+.score .big{font-size:48px;font-weight:900;color:var(--blue)}
+:root[data-theme="dark"] .score .big{color:var(--yellow)}
+.hide{display:none}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:18px 0}
+.warn{font-size:13px;color:var(--muted);margin-top:8px}
+.modes{display:grid;gap:12px;margin-top:12px}
+.mode{display:flex;align-items:center;gap:14px;text-align:left;font:inherit;color:var(--ink);background:var(--card);border:3px solid var(--line);border-radius:20px;padding:14px 16px;cursor:pointer;box-shadow:0 4px 0 var(--line)}
+.mode:hover{border-color:var(--blue)}
+.mode .ic{font-size:30px}
+.mode b{font-size:20px;display:block}
+.mode small{color:var(--muted);font-weight:700}
+h2.t{text-align:center;margin:0 0 4px}
+.sub{text-align:center;color:var(--muted);margin:0 0 6px}
+.note{text-align:center;font-weight:700;margin-top:10px}
+a.mode{text-decoration:none}a.alt{text-decoration:none;display:inline-block}.topbar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:6px}
+/* tema tosca 3D */
+body{background:linear-gradient(160deg,#37c3cf 0%,#1f89ab 45%,#173d78 100%) fixed;min-height:100vh}
+header h1{color:#fff;text-shadow:0 4px 0 rgba(0,0,0,.2)}
+header p{color:#e6fbff}
+footer{color:#d3f1f7}
+button.go,a.go{background:#ff8a3d;color:#fff;border:3px solid #e8691a;box-shadow:0 5px 0 #c9560f;text-shadow:0 1px 0 rgba(0,0,0,.2)}
+button.go:active,a.go:active{transform:translateY(4px);box-shadow:none}
+.card{box-shadow:0 8px 0 rgba(0,0,0,.18),0 18px 40px rgba(8,30,70,.25);border-color:rgba(255,255,255,.55)}
+a.alt{background:rgba(255,255,255,.92);color:#1f4f9c;border:3px solid #fff;border-radius:999px;padding:8px 16px;font-weight:800;text-decoration:none;display:inline-block}
+
+.nav{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:6px 0 0}
+.nav .logo{width:44px;height:44px;border-radius:50%;object-fit:cover;border:3px solid #ffd93b}
+.nav .links{display:flex;gap:6px;margin-left:auto;align-items:center;flex-wrap:wrap}
+.nav a.l{color:#fff;font-weight:800;text-decoration:none;padding:8px 14px;border-radius:999px}
+.nav a.l:hover{background:rgba(255,255,255,.18)}
+.nav .tb{background:rgba(255,255,255,.92);border:0;border-radius:999px;width:40px;height:40px;cursor:pointer;font-size:18px}
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:10px;align-items:center;padding:26px 0 18px}
+.hero h1{font-size:clamp(44px,9vw,92px);line-height:.98;margin:0;color:#fff;letter-spacing:-1px;text-shadow:0 6px 0 rgba(0,0,0,.2)}
+.hero p.lead{color:#e9fbff;font-weight:700;font-size:clamp(16px,2.4vw,20px);max-width:30ch;margin:18px 0 22px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.cta a{text-decoration:none;font-weight:900;letter-spacing:.5px;padding:14px 28px;border-radius:999px;font-size:16px;display:inline-block}
+.cta a.ghost{color:#fff;border:3px solid rgba(255,255,255,.85);background:rgba(255,255,255,.08)}
+.cta a.ghost:hover{background:rgba(255,255,255,.2)}
+.art{width:112%;max-width:600px;justify-self:center;animation:floaty 5s ease-in-out infinite;filter:drop-shadow(0 22px 24px rgba(6,24,60,.35))}
+@keyframes floaty{50%{transform:translateY(-10px)}}
+@media (prefers-reduced-motion:reduce){.art{animation:none}}
+@media (max-width:720px){.hero{grid-template-columns:1fr;text-align:center;padding-top:10px}.hero p.lead{margin-left:auto;margin-right:auto}.cta{justify-content:center}.nav .links a.l{padding:6px 10px}}
+
+.scene{position:relative;width:100%;max-width:600px;justify-self:center;padding-top:44px}
+.scene .art{position:relative;z-index:1;display:block;margin:0 auto}
+.cl{position:absolute;left:0;z-index:0;transform:translateX(var(--x,0%));animation:drift var(--d,50s) linear infinite;animation-delay:var(--dl,0s);filter:drop-shadow(0 8px 10px rgba(6,40,90,.18));pointer-events:none}
+.cl.f{z-index:2}
+@keyframes drift{from{transform:translateX(-160%)}to{transform:translateX(480%)}}
+@media (prefers-reduced-motion:reduce){.cl{animation:none}}
+
+
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+[hidden]{display:none!important}
+.appbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;padding:9px 16px;background:rgba(18,60,110,.55);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.22)}
+.appbar-in{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:900;text-decoration:none;font-size:18px}
+.brand img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:3px solid #ffd93b}
+.appnav{display:flex;gap:4px;margin-left:auto}
+.appnav a{color:#fff;text-decoration:none;font-weight:800;padding:8px 16px;border-radius:999px;transition:background .2s}
+.appnav a:hover{background:rgba(255,255,255,.18)}
+.appnav a.on{background:#fff;color:#1f4f9c}
+.tools{display:flex;align-items:center;gap:8px}
+.tbtn,#bgmBtn{width:40px;height:40px;border:0;border-radius:50%;background:rgba(255,255,255,.92);font-size:18px;cursor:pointer;line-height:1}
+#bgm{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.18);border-radius:999px;padding-right:12px}
+#bgm input{width:72px;accent-color:#ffd93b;cursor:pointer}
+#bgm span{color:#fff;font-size:12px;font-weight:800;white-space:nowrap}
+#bgm.on #bgmBtn{animation:bgmPulse 1s ease-in-out infinite}
+@keyframes bgmPulse{50%{transform:scale(1.12) rotate(-6deg)}}
+.tabbar{display:none}
+.hero{padding:36px 0 28px;gap:20px}
+.hbadge{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:999px;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.6);color:#fff;font-weight:900;font-size:14px;letter-spacing:.4px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 6px 16px rgba(6,24,60,.18)}
+.hero h1{margin:18px 0 0}
+.hero h1 em{font-style:normal;color:#ffd93b;text-shadow:0 6px 0 rgba(160,90,0,.35)}
+.hero .cta{margin-top:40px;gap:16px}
+.cta a{display:inline-flex;align-items:center;gap:10px;padding:17px 32px;font-size:17px;transition:transform .18s,background .18s}
+.cta a:hover{transform:translateY(-3px)}
+.cta a.go .arr{transition:transform .18s}
+.cta a.go:hover .arr{transform:translateX(5px)}
+.cta a.ghost{background:rgba(255,255,255,.14);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 6px 16px rgba(6,24,60,.18)}
+@media (max-width:720px){.hero .cta{margin-top:30px}.cta a{padding:15px 26px}}
+.view.in{animation:viewIn .35s ease-out}
+@keyframes viewIn{from{opacity:0;transform:translateY(12px)}}
+@media (prefers-reduced-motion:reduce){.view.in,#bgm.on #bgmBtn{animation:none}}
+.flash{position:fixed;inset:0;background:rgba(229,72,77,.45);pointer-events:none;z-index:50;animation:fl .6s ease-out forwards}
+@keyframes fl{to{opacity:0}}
+.shake{animation:sh .4s}
+@keyframes sh{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.conf{position:fixed;top:-12px;width:10px;height:14px;pointer-events:none;z-index:60;border-radius:2px}
+.modes{gap:14px;grid-template-columns:minmax(0,1fr)}
+h2.t{font-size:26px;font-weight:900}
+.lvl{--c1:#2e9e5b;--c2:#8be0a1;position:relative;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px;width:100%;text-align:left;font:inherit;color:var(--ink);background:var(--card);border:3px solid var(--line);border-radius:24px;padding:14px 18px 14px 20px;cursor:pointer;overflow:hidden;box-shadow:0 5px 0 var(--line),0 14px 28px rgba(8,30,70,.14);transition:transform .18s,box-shadow .18s,border-color .18s}
+.lvl::before{content:"";position:absolute;left:0;top:0;bottom:0;width:8px;background:linear-gradient(var(--c2),var(--c1))}
+.lvl-mid{--c1:#f07a1f;--c2:#ffc371}.lvl-hard{--c1:#d6336c;--c2:#8e6cf0}
+.lvl:hover{transform:translateY(-3px);border-color:var(--c1);box-shadow:0 8px 0 var(--line),0 20px 36px rgba(8,30,70,.22)}
+.lvl:active{transform:translateY(3px);box-shadow:0 2px 0 var(--line)}
+.lvl:focus-visible{outline:4px solid var(--blue);outline-offset:3px}
+.lv-badge{position:relative;display:flex;align-items:center;justify-content:center;width:100px;height:86px;padding:0 8px;flex-shrink:0;border-radius:22px;background:linear-gradient(145deg,var(--c2),var(--c1));box-shadow:inset 0 2px 0 rgba(255,255,255,.55),inset 0 -5px 0 rgba(0,0,0,.14),0 6px 14px rgba(0,0,0,.18)}
+.lv-badge::after{content:"";position:absolute;inset:0 0 50%;border-radius:22px 22px 40% 40%;background:linear-gradient(rgba(255,255,255,.35),rgba(255,255,255,0));pointer-events:none}
+.bn{width:var(--s,40px);height:var(--s,40px);margin-left:calc(var(--s,40px)*-.3);flex:none;filter:drop-shadow(0 3px 2px rgba(0,0,0,.28));transform:rotate(-6deg);position:relative;z-index:1}.lvl-easy .bn{--s:56px}.lvl-mid .bn{--s:44px}.lvl-hard .bn{--s:34px}.lvl{min-width:0}
+.bn:first-child{margin-left:0}.bn:nth-child(2){transform:rotate(2deg) translateY(-2px)}.bn:nth-child(3){transform:rotate(9deg) translateY(1px)}
+.lv-body{display:flex;flex-direction:column;gap:3px;min-width:0}
+.lv-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lv-top b{font-size:23px;line-height:1.1;font-weight:900}
+.lv-top em{font-style:normal;font-size:11px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;color:#fff;background:linear-gradient(90deg,var(--c1),var(--c2));padding:3px 10px;border-radius:999px}
+.lvl small{color:var(--muted);font-weight:700;font-size:13.5px;line-height:1.35}
+.lv-meter{display:block;height:8px;border-radius:99px;background:rgba(127,127,127,.22);overflow:hidden;margin-top:6px}
+.lv-meter i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--c1),var(--c2))}
+.lv-left{font-size:12px;font-weight:800;color:var(--muted)}.lv-left strong{color:var(--ink)}
+.lv-go{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:18px;font-weight:900;color:#fff;background:linear-gradient(145deg,var(--c2),var(--c1));box-shadow:0 4px 0 rgba(0,0,0,.18);transition:transform .18s}
+.lvl:hover .lv-go{transform:translateX(4px)}
+@media (max-width:640px){
+ .appnav{display:none}.tools{margin-left:auto}
+ #bgm{padding:0;background:none}#bgm span,#bgm input{display:none}
+ .tabbar{display:flex;position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:30;gap:4px;padding:6px;background:rgba(14,40,86,.85);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-radius:26px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+ .tabbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;color:#cfe6ff;text-decoration:none;font-size:12px;font-weight:800;padding:8px 4px;border-radius:20px}
+ .tabbar a b{font-size:20px;line-height:1}
+ .tabbar a.on{background:#ffd93b;color:#2b2a33}
+ .wrap{padding-bottom:28px}
+}
+@media (max-width:480px){.lvl{grid-template-columns:auto 1fr;gap:12px;padding-left:18px}.lv-go{display:none}.lv-badge{width:76px;height:76px;padding:0 5px}.lvl-easy .bn{--s:42px}.lvl-mid .bn{--s:32px}.lvl-hard .bn{--s:26px}.lv-top b{font-size:20px}}
+
+
+.splash,.pgload{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:radial-gradient(circle at 50% 38%,#5fd9e0 0%,#1f89ab 48%,#173d78 100%);color:#fff;text-align:center}
+.splash{transition:opacity .55s ease,visibility .55s}
+.splash.out{opacity:0;visibility:hidden;pointer-events:none}
+.splash .cloud{position:absolute;height:34px;border-radius:99px;background:rgba(255,255,255,.55);filter:blur(1px);animation:cdrift linear infinite}
+.splash .cloud::before,.splash .cloud::after{content:"";position:absolute;background:inherit;border-radius:50%}
+.splash .cloud::before{width:44%;height:150%;left:12%;bottom:30%}.splash .cloud::after{width:36%;height:120%;right:14%;bottom:25%}
+@keyframes cdrift{from{transform:translateX(-30vw)}to{transform:translateX(130vw)}}
+.sp-in{position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;padding:20px}
+.sp-ring{position:relative;width:132px;height:132px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.16);box-shadow:inset 0 0 0 4px rgba(255,255,255,.55),0 18px 40px rgba(6,24,60,.35)}
+.sp-ring::after{content:"";position:absolute;inset:-10px;border-radius:50%;border:4px solid transparent;border-top-color:#ffd93b;border-right-color:#ffd93b;animation:spin 1.1s linear infinite}
+.sp-ring svg{width:76px;height:76px;filter:drop-shadow(0 6px 4px rgba(0,0,0,.3));animation:bnb 1.1s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes bnb{50%{transform:translateY(-10px) rotate(10deg)}}
+.sp-t{font-size:clamp(28px,7vw,40px);font-weight:900;text-shadow:0 5px 0 rgba(0,0,0,.2);letter-spacing:-.5px}
+.sp-t span{color:#ffd93b}
+.sp-bar{width:min(240px,64vw);height:12px;border-radius:99px;background:rgba(255,255,255,.28);overflow:hidden;box-shadow:inset 0 2px 0 rgba(0,0,0,.12)}
+.sp-bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#ffd93b,#ff8a3d);animation:fillb 1.5s cubic-bezier(.3,.7,.3,1) forwards}
+@keyframes fillb{to{width:100%}}
+.sp-s{font-weight:800;color:#e6fbff;font-size:14px}
+.sp-go{margin-top:6px;font:inherit;font-weight:900;font-size:17px;letter-spacing:.5px;color:#fff;background:#ff8a3d;border:3px solid #e8691a;box-shadow:0 5px 0 #c9560f;border-radius:999px;padding:15px 30px;cursor:pointer;text-shadow:0 1px 0 rgba(0,0,0,.2);animation:gopulse 1.2s ease-in-out infinite}.sp-go:active{transform:translateY(4px);box-shadow:none;animation:none}@keyframes gopulse{50%{transform:scale(1.06)}}@media (prefers-reduced-motion:reduce){.sp-go{animation:none}}
+.pgload{z-index:150;opacity:0;visibility:hidden;transition:opacity .2s ease,visibility .2s}
+.pgload.on{opacity:1;visibility:visible}
+.pl-in{display:flex;flex-direction:column;align-items:center;gap:14px;transform:scale(.9);transition:transform .25s}.pgload.on .pl-in{transform:none}.pgload svg{width:84px;height:84px;filter:drop-shadow(0 6px 4px rgba(0,0,0,.3));animation:spin .7s linear infinite}.pl-t{font-size:22px!important}.pgload .sp-bar i{animation:none}.pgload.on .sp-bar i{animation:fillb .8s ease-out forwards}
+@media (prefers-reduced-motion:reduce){.sp-ring::after,.sp-ring svg,.splash .cloud,.pgload svg{animation:none}.sp-bar i{animation-duration:.01s}}
+.tools{margin-left:auto}
+.brand{min-width:0}.who{display:flex;flex-direction:column;line-height:1.15;min-width:0}.who small{font-size:12px;font-weight:800;color:#d6f3f8}.who b{font-size:19px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:52vw}
+.backbtn{margin:12px 0 0;display:inline-block}
+.info{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:6px 0 18px}
+.icard{display:block;text-decoration:none;color:var(--ink);background:var(--card);border:3px solid rgba(255,255,255,.55);border-radius:22px;padding:16px;box-shadow:0 6px 0 rgba(0,0,0,.16),0 14px 30px rgba(8,30,70,.18);transition:transform .18s}
+a.icard:hover{transform:translateY(-3px)}
+.icard b{font-size:30px;display:block;line-height:1.2}.icard h3{margin:6px 0 2px;font-size:18px}.icard p{margin:0;color:var(--muted);font-weight:700;font-size:14px}
+@media (max-width:720px){.info{grid-template-columns:1fr}}
+.sp-form{display:flex;flex-direction:column;align-items:center;gap:12px;width:min(320px,86vw)}
+.sp-q{font-size:22px;font-weight:900;text-shadow:0 3px 0 rgba(0,0,0,.18)}
+.sp-form input{width:100%;font:inherit;font-size:18px;font-weight:800;text-align:center;padding:14px 18px;border-radius:999px;border:4px solid rgba(255,255,255,.9);background:rgba(255,255,255,.95);color:#1f4f9c;outline:none;box-shadow:0 6px 0 rgba(0,0,0,.15)}
+.sp-form input:focus{border-color:#ffd93b}
+.sp-err{background:rgba(229,72,77,.92);padding:6px 14px;border-radius:12px;font-weight:800;font-size:13px}
+.sp-note{font-size:12px;font-weight:700;color:#e6fbff}
+.sp-link{background:none;border:0;color:#fff;font:inherit;font-weight:800;text-decoration:underline;cursor:pointer;opacity:.9}
+.clock{margin:10px 0 22px;text-align:center;padding:24px 16px 20px;border-radius:28px;background:rgba(255,255,255,.14);border:3px solid rgba(255,255,255,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 8px 0 rgba(0,0,0,.16),0 18px 40px rgba(8,30,70,.22);color:#fff}
+.ck-greet{font-weight:900;font-size:clamp(17px,4vw,22px);text-shadow:0 3px 0 rgba(0,0,0,.18)}
+.ck-time{font-size:clamp(44px,13vw,84px);font-weight:900;font-variant-numeric:tabular-nums;letter-spacing:2px;line-height:1.1;margin:6px 0;text-shadow:0 6px 0 rgba(0,0,0,.2)}
+.ck-time .c{color:#ffd93b;animation:ckb 1s steps(1) infinite}
+.ck-time small{font-size:.26em;letter-spacing:1px;color:#e6fbff;font-weight:800;vertical-align:.9em}
+.ck-date{font-weight:800;color:#e6fbff;font-size:clamp(14px,3.6vw,18px)}
+@keyframes ckb{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.ck-time .c{animation:none}}
+
+/* ===== PERBAIKAN TAMPILAN BERANDA DI HP ===== */
+html,body{overflow-x:clip;max-width:100%}
+.hero>*{min-width:0}
+.scene{overflow-x:clip}
+@media (max-width:720px){
+  .art{width:100%;max-width:420px}
+  .hero{padding:20px 0 14px;gap:14px}
+  .hero h1{font-size:clamp(40px,12vw,64px)}
+  .hero .cta{flex-direction:column;align-items:stretch;gap:14px;width:100%;max-width:320px;margin:26px auto 0}
+  .hero .cta a{justify-content:center;width:100%}
+}
+@media (max-width:640px){
+  .wrap{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px))}
+}
+
+.jl{display:block;flex:none;filter:drop-shadow(0 4px 5px rgba(5,25,80,.4))}
+.wl{position:fixed;inset:0;z-index:70;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:20px;text-align:center;color:#fff;background:rgba(12,50,120,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);pointer-events:none;transition:opacity .6s}
+.wl.out{opacity:0}
+.wl-s{font-weight:900;font-size:clamp(24px,6vw,36px);text-shadow:0 4px 0 rgba(0,0,0,.2);animation:wlIn .5s ease-out both}
+.wl-n{font-weight:900;font-size:clamp(46px,15vw,104px);line-height:1.05;color:#ffd93b;text-shadow:0 7px 0 rgba(160,90,0,.4);word-break:break-word}
+.wl-n span{display:inline-block;animation:wlLet .6s cubic-bezier(.2,1.5,.4,1) both}
+.wl-e{font-weight:800;font-size:clamp(16px,4vw,22px);margin-top:10px;animation:wlIn .6s ease-out 1.1s both}
+@keyframes wlIn{from{opacity:0;transform:translateY(14px)}}
+@keyframes wlLet{from{opacity:0;transform:translateY(34px) scale(.4) rotate(-12deg)}}
+@media (prefers-reduced-motion:reduce){.wl-s,.wl-n span,.wl-e{animation:none}}
+.wl-b{position:absolute;inset:0;overflow:hidden}
+.bb{position:absolute;left:0;top:0;display:grid;place-items:center;border-radius:50%;color:#fff;font-weight:900;text-align:center;overflow:hidden;line-height:1;border:2px solid rgba(255,255,255,.65);background:radial-gradient(circle at 30% 28%,rgba(255,255,255,.55),rgba(255,255,255,.08) 38%,rgba(120,210,255,.12) 70%,rgba(255,255,255,.28));box-shadow:inset 0 0 14px rgba(255,255,255,.35),0 6px 16px rgba(5,25,80,.25);animation:bbFly linear both;opacity:0}
+.bb::after{content:"";position:absolute;left:18%;top:14%;width:24%;height:14%;border-radius:50%;background:rgba(255,255,255,.75);transform:rotate(-30deg)}
+.bb span{position:relative;z-index:1;padding:0 6%;text-shadow:0 2px 3px rgba(5,25,80,.45);max-width:100%;overflow-wrap:anywhere}
+@keyframes bbFly{0%{opacity:0;transform:translate(var(--sx),var(--sy))}8%{opacity:1}90%{opacity:1}100%{opacity:0;transform:translate(var(--tx),var(--ty))}}
+.bb.pop{animation-name:bbPop;animation-timing-function:ease-out}
+@keyframes bbPop{0%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(0)}18%{opacity:1;transform:translate(var(--sx),var(--sy)) scale(1.1)}28%{transform:translate(var(--sx),var(--sy)) scale(1)}85%{opacity:1}100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.9)}}
+.wl-s,.wl-n,.wl-e{position:relative}
+#modes.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:18px;margin-top:14px}
+#modes .lvl{--d:#1c6e3f;position:relative;display:flex;flex-direction:column;gap:10px;align-items:stretch;text-align:left;padding:16px 16px 14px;border:0;border-radius:26px;color:#fff;overflow:hidden;isolation:isolate;background:linear-gradient(150deg,var(--c2) -10%,var(--c1) 85%);box-shadow:0 8px 0 var(--d),0 20px 30px rgba(8,30,70,.3),inset 0 2px 0 rgba(255,255,255,.5);transition:transform .2s,box-shadow .2s}
+#modes .lvl::before{content:"";position:absolute;inset:0 0 55% 0;width:auto;left:0;top:0;bottom:auto;background:linear-gradient(rgba(255,255,255,.32),rgba(255,255,255,0));border-radius:26px 26px 60% 60%;z-index:-1}
+#modes .lvl::after{content:"";position:absolute;top:-30%;left:-60%;width:40%;height:160%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:rotate(18deg);animation:lcShine 5s ease-in-out infinite;z-index:-1}
+#modes .lvl-mid{--d:#b3520a}#modes .lvl-hard{--d:#7a1d6e}
+#modes .lvl:nth-child(2)::after{animation-delay:1.4s}#modes .lvl:nth-child(3)::after{animation-delay:2.8s}
+@keyframes lcShine{0%,55%{left:-60%}100%{left:130%}}
+#modes .lvl:hover{transform:translateY(-6px) rotate(-.6deg);box-shadow:0 14px 0 var(--d),0 28px 36px rgba(8,30,70,.35),inset 0 2px 0 rgba(255,255,255,.5);border-color:transparent}
+#modes .lvl:active{transform:translateY(5px);box-shadow:0 3px 0 var(--d),0 8px 14px rgba(8,30,70,.3)}
+#modes .lvl:focus-visible{outline:4px solid #fff;outline-offset:3px}
+.lc-no{position:absolute;right:10px;bottom:-34px;font-size:150px;font-weight:900;line-height:1;color:rgba(255,255,255,.17);z-index:-1;pointer-events:none}
+.lc-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.lc-top em{font-style:normal;font-size:11px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;background:rgba(0,0,0,.22);padding:4px 11px;border-radius:999px}
+.lc-bn{display:flex}.lc-bn .bn{--s:30px;margin-left:-7px;filter:drop-shadow(0 3px 2px rgba(0,0,0,.3))}.lc-bn .bn:first-child{margin-left:0}
+.lc-mid{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.lc-txt{display:flex;flex-direction:column;gap:3px;min-width:0}
+.lc-name{font-size:28px;line-height:1.05;font-weight:900;text-shadow:0 3px 0 rgba(0,0,0,.2)}
+.lc-desc{font-size:13px;font-weight:700;line-height:1.35;color:rgba(255,255,255,.92)}
+.lc-ring{position:relative;flex:none;width:62px;height:62px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.25))}
+.lc-ring svg{width:100%;height:100%;display:block}
+.lc-ring strong{position:absolute;inset:0;display:grid;place-items:center;font-size:19px;font-weight:900}
+.lc-left{font-size:12.5px;font-weight:700;color:rgba(255,255,255,.92)}.lc-left b{font-weight:900}
+.lc-go{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;margin-top:2px;font-weight:900;font-size:14px;letter-spacing:.6px;padding:9px 18px;border-radius:999px;background:#fff;color:var(--d);box-shadow:0 4px 0 rgba(0,0,0,.2);transition:gap .2s}
+.lc-go i{font-style:normal;transition:transform .2s}
+#modes .lvl:hover .lc-go i{transform:translateX(5px)}
+@media (max-width:560px){#modes.modes{grid-template-columns:1fr}.lc-no{font-size:120px}}
+@media (prefers-reduced-motion:reduce){#modes .lvl::after{animation:none;display:none}#modes .lvl:hover{transform:none}}
+#quiz.card{--ink:#fff;--muted:rgba(255,255,255,.82);--line:rgba(255,255,255,.3);--ok:#7dffb0;--bad:#ff9aa0;--code:rgba(6,20,52,.55);position:relative;isolation:isolate;overflow:hidden;color:#fff;background:linear-gradient(145deg,rgba(255,255,255,.26),rgba(255,255,255,.07) 55%,rgba(120,220,255,.12));-webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);border:2px solid rgba(255,255,255,.5);box-shadow:0 22px 50px rgba(5,25,80,.35),inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(255,255,255,.15)}
+#quiz.card::before{content:"";position:absolute;z-index:-1;width:260px;height:260px;left:-80px;top:-90px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.4),rgba(255,255,255,0) 70%);pointer-events:none}
+#quiz.card::after{content:"";position:absolute;z-index:-1;width:300px;height:300px;right:-110px;bottom:-130px;border-radius:50%;background:radial-gradient(circle,rgba(255,217,59,.28),rgba(255,217,59,0) 70%);pointer-events:none}
+#quiz .t,#quiz .sub{color:#fff;text-shadow:0 2px 0 rgba(0,40,100,.25)}
+#quiz .meta{color:rgba(255,255,255,.88)}
+#quiz .bar{background:rgba(255,255,255,.25)}
+#quiz .bar i{background:linear-gradient(90deg,#ffd93b,#7dffb0)}
+#quiz .opt{background:rgba(255,255,255,.13);color:#fff;border:2px solid rgba(255,255,255,.35);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);transition:background .15s,border-color .15s,transform .15s}
+#quiz .opt:hover:not(:disabled){background:rgba(255,255,255,.26);border-color:#ffd93b;transform:translateX(3px)}
+#quiz .opt.ok{background:rgba(46,220,120,.34);border-color:#7dffb0}
+#quiz .opt.bad{background:rgba(255,80,95,.34);border-color:#ff9aa0}
+#quiz .exp{background:rgba(255,217,59,.2);border:1px solid rgba(255,217,59,.45);color:#fff}
+#quiz pre.snip{border:1px solid rgba(255,255,255,.22)}
+#quiz button.alt{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.7)}
+#quiz button.alt:hover{background:rgba(255,255,255,.24)}
+#quiz .score .big{color:#ffd93b;text-shadow:0 3px 0 rgba(0,40,100,.3)}
+#quiz .card{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.3);box-shadow:none}
+.menu-foot{display:flex;justify-content:flex-end;margin-top:22px}
+.matbtn{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:#2b2a33;background:linear-gradient(150deg,#fff3a6,#ffd93b);padding:10px 20px 10px 12px;border-radius:999px;box-shadow:0 5px 0 #c98a00,0 12px 20px rgba(8,30,70,.28),inset 0 2px 0 rgba(255,255,255,.7);transition:transform .18s,box-shadow .18s}
+.matbtn .mi{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#fff;font-size:22px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.1)}
+.matbtn .mt{display:flex;flex-direction:column;line-height:1.15;text-align:left}
+.matbtn b{font-size:17px;font-weight:900}.matbtn small{font-size:12px;font-weight:700;opacity:.75}
+.matbtn:hover{transform:translateY(-3px);box-shadow:0 8px 0 #c98a00,0 18px 26px rgba(8,30,70,.3),inset 0 2px 0 rgba(255,255,255,.7)}
+.matbtn:active{transform:translateY(3px);box-shadow:0 2px 0 #c98a00}
+.matbtn:focus-visible{outline:4px solid #fff;outline-offset:3px}
+.jl.big{margin:0 auto}
+.hi{display:flex;align-items:center;gap:8px;font-weight:900;font-size:clamp(24px,6vw,36px);color:#fff;text-shadow:0 4px 0 rgba(0,0,0,.18);margin:0 0 14px;animation:hiIn .6s cubic-bezier(.2,1.4,.4,1) both}
+.hi b{color:#ffd93b;font-weight:900}
+.hi .wave{display:inline-block;transform-origin:70% 70%;animation:wave 1.8s ease-in-out .5s 3}
+@keyframes hiIn{from{opacity:0;transform:translateY(14px) scale(.9)}}
+@keyframes wave{0%,60%,100%{transform:rotate(0)}10%,30%{transform:rotate(16deg)}20%,40%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+@media (max-width:720px){.hi{justify-content:center}}
+@media (prefers-reduced-motion:reduce){.hi,.hi .wave{animation:none}}
+@keyframes jfloat{50%{transform:translateY(-3px)}}
+.brand .jl{animation:jfloat 3s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.brand .jl{animation:none}}
+.mat details{border:3px solid var(--line);border-radius:18px;margin:10px 0;padding:0 14px;background:var(--card)}
+.mat summary{cursor:pointer;font-weight:900;font-size:18px;padding:12px 0;list-style:none}
+.mat summary::-webkit-details-marker{display:none}
+.mat summary::before{content:"▸ ";color:var(--blue)}
+.mat details[open] summary::before{content:"▾ "}
+.mat details[open]{border-color:var(--blue)}
+.mat p,.mat li{line-height:1.55;margin:6px 0}
+.mat ul{padding-left:20px;margin:6px 0}
+.mat code{background:rgba(47,111,207,.14);padding:1px 6px;border-radius:6px;font-family:ui-monospace,Consolas,monospace;font-size:.92em}
+.mat .tip{padding:8px 12px;border-radius:12px;background:rgba(255,217,59,.28);font-weight:600;margin:8px 0 12px}
+</style>
+</head>
+<body>
+<div class="splash" id="splash" role="status" aria-label="Memuat">
+<i class="cloud" style="top:12%;width:150px;animation-duration:26s;animation-delay:-8s"></i><i class="cloud" style="top:70%;width:110px;opacity:.7;animation-duration:34s;animation-delay:-20s"></i><i class="cloud" style="top:38%;width:80px;opacity:.5;animation-duration:22s;animation-delay:-3s"></i>
+<div class="sp-in"><div class="sp-ring"><svg viewBox="0 0 64 64" aria-hidden="true"><g transform="translate(5 2)"><path d="M44 10C50 26 46 46 22 56C16 58 8 56 8 50C8 47 11 46 14 46C28 42 34 28 34 12C34 8 40 6 44 10Z" fill="url(#bnG)" stroke="#c98a00" stroke-width="2.4" stroke-linejoin="round"/><path d="M40 15C41 28 36 39 22 48" fill="none" stroke="#fff6b0" stroke-width="3" stroke-linecap="round" opacity=".7"/><path d="M37 9L40 2L46 4L43 11Z" fill="#7a4a12" stroke="#5b3510" stroke-width="1.5" stroke-linejoin="round"/><circle cx="10.5" cy="51" r="2.4" fill="#5b3510"/></g></svg></div><div class="sp-t">Belajar <span>Bahasa C</span></div><div class="sp-bar" id="spbar"><i></i></div><div class="sp-s" id="sps">Menyiapkan pisang… 🍌</div><div class="sp-form" id="spform" hidden>
+<div class="sp-q" id="spq">Siapa namamu?</div>
+<input id="spname" type="text" maxlength="30" autocomplete="given-name" placeholder="Ketik namamu di sini" aria-label="Nama kamu">
+<div class="sp-err" id="sperr" hidden>Isi namamu dulu ya, minimal 2 huruf 🍌</div>
+<button class="sp-go" id="spgo" type="button">MASUK ➜</button>
+<button class="sp-link" id="spchg" type="button" hidden>Bukan kamu? Ganti nama</button>
+</div></div></div>
+<div class="pgload" id="pgload" aria-hidden="true"><div class="pl-in"><svg viewBox="0 0 64 64" aria-hidden="true"><g transform="translate(5 2)"><path d="M44 10C50 26 46 46 22 56C16 58 8 56 8 50C8 47 11 46 14 46C28 42 34 28 34 12C34 8 40 6 44 10Z" fill="url(#bnG)" stroke="#c98a00" stroke-width="2.4" stroke-linejoin="round"/><path d="M40 15C41 28 36 39 22 48" fill="none" stroke="#fff6b0" stroke-width="3" stroke-linecap="round" opacity=".7"/><path d="M37 9L40 2L46 4L43 11Z" fill="#7a4a12" stroke="#5b3510" stroke-width="1.5" stroke-linejoin="round"/><circle cx="10.5" cy="51" r="2.4" fill="#5b3510"/></g></svg><div class="sp-t pl-t" id="plt">Memuat…</div><div class="sp-bar"><i></i></div></div></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="bnG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff07a"/><stop offset=".55" stop-color="#ffd21f"/><stop offset="1" stop-color="#f5a300"/></linearGradient></defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="jT" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7fd6ff"/><stop offset="1" stop-color="#1e5fe0"/></linearGradient><linearGradient id="jF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8f7ff"/><stop offset=".5" stop-color="#6cc4ff"/><stop offset="1" stop-color="#2f7cf0"/></linearGradient><symbol id="jlogo" viewBox="0 0 64 64"><defs><radialGradient id="jBg" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#1d3f86"/><stop offset="1" stop-color="#050b22"/></radialGradient><radialGradient id="jGl" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#2fd0ff" stop-opacity=".55"/><stop offset="1" stop-color="#2fd0ff" stop-opacity="0"/></radialGradient><linearGradient id="jJ" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2cf0ff"/><stop offset="1" stop-color="#2a76ee"/></linearGradient><linearGradient id="jFl" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#27c8ff"/><stop offset="1" stop-color="#b8fbff"/></linearGradient></defs><ellipse cx="30" cy="61" rx="15" ry="2.4" fill="#06204d" opacity=".28"/><g transform="translate(-2 0)"><path d="M24 10H42V38Q42 54 28 54Q20 54 15 47L21 41Q24 46 28 46Q32 46 32 38V16H24Z" fill="#07307f" transform="translate(3 3.5)"/><path d="M24 10H42V38Q42 54 28 54Q20 54 15 47L21 41Q24 46 28 46Q32 46 32 38V16H24Z" fill="#0d4ab8" transform="translate(2 2.3)"/><path d="M24 10H42V38Q42 54 28 54Q20 54 15 47L21 41Q24 46 28 46Q32 46 32 38V16H24Z" fill="#1666d8" transform="translate(1 1.1)"/><path d="M24 10H42V38Q42 54 28 54Q20 54 15 47L21 41Q24 46 28 46Q32 46 32 38V16H24Z" fill="url(#jJ)"/><path d="M34.5 17V37" stroke="#fff" stroke-opacity=".4" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M25 12H41" stroke="#fff" stroke-opacity=".55" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M42 13C46 14 49 11 52 5C52 10 55 11 59 9C56 14 50 16 46 18C45 16 43 15 42 15Z" fill="url(#jFl)"/><path d="M42 21C47 22 51 19 55 16C54 21 57 22 61 21C57 26 50 27 46 28C45 25 43 24 42 24Z" fill="url(#jFl)"/><path d="M42 30C46 31 50 30 54 28C53 32 55 34 58 34C54 37 49 37 45 38Z" fill="url(#jFl)"/></g></symbol></defs></svg>
+<div class="appbar"><div class="appbar-in">
+  <a class="brand" href="#/"><svg class="jl" width="44" height="44" viewBox="0 0 64 64" role="img" aria-label="Logo J"><use href="#jlogo"/></svg><span class="who"><small>Belajar Bahasa C</small><b id="hello">Halo! 👋</b></span></a>
+  <div class="tools">
+    <div id="bgm" role="group" aria-label="Musik latar"><button id="bgmBtn" aria-label="Putar musik latar" title="Putar / jeda musik">🎵</button><input id="bgmVol" type="range" min="0" max="100" value="45" aria-label="Volume musik"><span id="bgmTxt">Musik mati</span></div>
+    <button class="tbtn" id="theme" aria-label="Ganti tema" title="Ganti tema">🌙</button>
+  </div>
+</div></div>
+<div class="wrap">
+<main>
+<section class="view" id="v-home" data-route="home">
+<section class="hero">
+  <div>
+    <div class="hi" id="hiName" hidden><span>Haii, <b id="hiN"></b>!</span> <span class="wave" aria-hidden="true">👋</span></div>
+    <span class="hbadge">🍌 Belajar sambil santai</span>
+    <h1>Belajar<br><em>Bahasa C</em></h1>
+    
+    <div class="cta">
+      <a class="go" href="#/kuis"><span>📝</span> MULAI KUIS <span class="arr">➜</span></a>
+      <a class="ghost" href="#/coding"><span>📖</span> MATERI</a>
+    </div>
+  </div>
+  <div class="scene"><svg class="cl b" style="top:2%;width:34%;--d:46s;--dl:-8s;--x:-20%" viewBox="0 0 200 100" aria-hidden="true"><g fill="#cfe9f4" opacity=".7"><rect x="40" y="66" width="128" height="26" rx="13"/></g><g fill="#fff"><circle cx="62" cy="62" r="30"/><circle cx="102" cy="46" r="38"/><circle cx="146" cy="62" r="28"/><rect x="38" y="60" width="132" height="28" rx="14"/></g></svg><svg class="cl b" style="top:16%;width:22%;--d:62s;--dl:-34s;--x:220%;opacity:.8" viewBox="0 0 200 100" aria-hidden="true"><g fill="#cfe9f4" opacity=".7"><rect x="40" y="66" width="128" height="26" rx="13"/></g><g fill="#fff"><circle cx="62" cy="62" r="30"/><circle cx="102" cy="46" r="38"/><circle cx="146" cy="62" r="28"/><rect x="38" y="60" width="132" height="28" rx="14"/></g></svg><svg class="cl b" style="top:-4%;width:26%;--d:54s;--dl:-22s;--x:90%;opacity:.9" viewBox="0 0 200 100" aria-hidden="true"><g fill="#cfe9f4" opacity=".7"><rect x="40" y="66" width="128" height="26" rx="13"/></g><g fill="#fff"><circle cx="62" cy="62" r="30"/><circle cx="102" cy="46" r="38"/><circle cx="146" cy="62" r="28"/><rect x="38" y="60" width="132" height="28" rx="14"/></g></svg><svg class="art" viewBox="0 0 520 440" role="img" aria-label="Pulau 3D melayang dengan rumah kecil">
+<defs><linearGradient id="gr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d4ec3c"/><stop offset="1" stop-color="#6fcb2c"/></linearGradient>
+<linearGradient id="gl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a58c8"/><stop offset="1" stop-color="#4a2f94"/></linearGradient>
+<linearGradient id="gd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a3fae"/><stop offset="1" stop-color="#2f1e70"/></linearGradient>
+<radialGradient id="sp" cx=".35" cy=".3"><stop offset="0" stop-color="#e6e0ff"/><stop offset="1" stop-color="#8f84d8"/></radialGradient>
+<radialGradient id="gl2" cx=".5" cy=".4"><stop offset="0" stop-color="#9bd7ff"/><stop offset="1" stop-color="#2f7fe0"/></radialGradient></defs>
+<ellipse cx="260" cy="410" rx="170" ry="16" fill="#0a2a55" opacity=".25"/>
+<polygon points="50,225 260,330 260,392 50,290" fill="url(#gl)"/>
+<polygon points="260,330 470,225 470,290 260,392" fill="url(#gd)"/>
+
+<polygon points="260,118 470,225 260,332 50,225" fill="url(#gr)"/>
+<polygon points="260,118 470,225 260,332 50,225" fill="none" stroke="#f3ff9c" stroke-opacity=".55" stroke-width="3"/>
+<g fill="#f3b681" stroke="#d98f58" stroke-width="2"><polygon points="260,278 292,294 260,310 228,294"/><polygon points="226,260 258,276 226,292 194,276"/><polygon points="296,258 328,274 296,290 264,274"/><polygon points="262,242 294,258 262,274 230,258"/></g>
+<rect x="118" y="215" width="12" height="38" rx="3" fill="#8a5a2b"/>
+<circle cx="124" cy="205" r="26" fill="#2f9a3f"/><circle cx="108" cy="218" r="17" fill="#3cb54a"/><circle cx="142" cy="216" r="16" fill="#3cb54a"/><circle cx="122" cy="192" r="14" fill="#56cc5c"/>
+<circle cx="185" cy="236" r="26" fill="url(#sp)"/><path d="M162 232 Q185 246 208 232" fill="none" stroke="#f08a24" stroke-width="4"/><rect x="180" y="205" width="10" height="9" rx="2" fill="#f08a24"/>
+<polygon points="318,246 266,220 266,142 318,168" fill="#3f4fb8" /><polygon points="318,246 370,220 370,142 318,168" fill="#2b3a96" /><polygon points="318,168 370,142 318,116 266,142" fill="#f6d9b0" />
+<polygon points="318,168 346,182 346,200 318,214 290,200 290,182" fill="none"/>
+<rect x="300" y="190" width="14" height="22" rx="3" fill="#ffb347" opacity=".95"/><rect x="326" y="196" width="14" height="22" rx="3" fill="#ffb347" opacity=".95"/>
+<polygon points="318,176 256,145 256,133 318,164" fill="#d66f12" /><polygon points="318,176 380,145 380,133 318,164" fill="#b85a0b" /><polygon points="318,164 380,133 318,102 256,133" fill="#f08a24" />
+<g stroke="#ffd29a" stroke-width="2" opacity=".9"><line x1="318" y1="100" x2="318" y2="164"/></g>
+<polygon points="318,96 340,106 318,116 296,106" fill="#f8a24a"/>
+<polygon points="410,262 390,252 390,210 410,220" fill="#3f95ee" stroke="#f08a24" stroke-width="3" stroke-linejoin="round"/><polygon points="410,262 430,252 430,210 410,220" fill="#2a74cf" stroke="#f08a24" stroke-width="3" stroke-linejoin="round"/><polygon points="410,220 430,210 410,200 390,210" fill="#8fd0ff" stroke="#f08a24" stroke-width="3" stroke-linejoin="round"/>
+<rect x="406" y="206" width="8" height="12" rx="2" fill="#f08a24"/>
+<polygon points="92,260 104,244 118,262 104,276" fill="#a9a1d8"/><polygon points="104,244 112,252 104,276 92,260" fill="#c9c3ee"/>
+</svg><svg class="cl f" style="top:30%;width:28%;--d:38s;--dl:-14s;--x:300%" viewBox="0 0 200 100" aria-hidden="true"><g fill="#cfe9f4" opacity=".7"><rect x="40" y="66" width="128" height="26" rx="13"/></g><g fill="#fff"><circle cx="62" cy="62" r="30"/><circle cx="102" cy="46" r="38"/><circle cx="146" cy="62" r="28"/><rect x="38" y="60" width="132" height="28" rx="14"/></g></svg></div>
+</section>
+
+<div class="clock" role="timer" aria-label="Jam sekarang"><div class="ck-greet" id="ckGreet">Halo! 👋</div><div class="ck-time" id="ckTime">--:--:--</div><div class="ck-date" id="ckDate"></div></div>
+</section>
+<section class="view" id="v-kuis" data-route="kuis" hidden>
+<a class="alt backbtn" href="#/">← Beranda</a>
+<header>
+  <svg class="mascot jl big" width="96" height="96" viewBox="0 0 64 64" role="img" aria-label="Logo J"><use href="#jlogo"/></svg>
+  <h1>Kuis Bahasa C</h1>
+  <p>Pilih mode, jawab 30 soal, lihat pembahasannya!</p>
+</header>
+<section id="quiz" class="card">
+  <div id="menu">
+    <h2 class="t">Pilih mode dulu yuk!</h2>
+    <div class="modes" id="modes"></div>
+    <div class="note hide" id="resetnote"></div>
+    <div class="menu-foot"><a class="matbtn" href="#/coding"><span class="mi">📖</span><span class="mt"><b>Materi</b><small>Belajar dulu sebelum kuis</small></span></a></div>
+  </div>
+  <div id="play" class="hide">
+    <div class="meta"><span id="no"></span><span id="sc"></span></div>
+    <div class="bar"><i id="pb"></i></div>
+    <div id="qbox"></div>
+    <div class="row"><span class="sp"></span><button class="go hide" id="next">Lanjut ➜</button></div>
+  </div>
+</section>
+
+</section>
+<section class="view" id="v-coding" data-route="coding" hidden>
+<a class="alt backbtn" href="#/">← Beranda</a>
+<header>
+  <svg class="mascot jl big" width="96" height="96" viewBox="0 0 64 64" role="img" aria-label="Logo J"><use href="#jlogo"/></svg>
+  <h1>Materi Bahasa C</h1>
+  <p>Rangkuman materi yang sesuai dengan soal kuis.</p>
+</header>
+<section id="code" class="card mat">
+<p class="sub" style="margin-top:0">Materi ini sejalan dengan soal-soal kuis. Ketuk judul untuk membuka.</p>
+<details open><summary>1. Struktur program &amp; input/output</summary><p>Program C selalu dimulai dari <code>main()</code>. <code>#include &lt;stdio.h&gt;</code> memuat fungsi <code>printf</code> dan <code>scanf</code>. Setiap pernyataan diakhiri <code>;</code>, dan <code>return 0;</code> berarti program selesai normal.</p><ul><li>Komentar: <code>//</code> satu baris, <code>/* ... */</code> banyak baris</li><li>Specifier: <code>%d</code> int, <code>%f</code> float/double, <code>%c</code> char, <code>%s</code> string, <code>%.2f</code> dua angka desimal, <code>%5d</code> lebar 5</li><li><code>\n</code> pindah baris, <code>scanf</code> butuh <code>&amp;</code> (alamat variabel)</li></ul><pre class="snip">#include &lt;stdio.h>
+
+int main() {
+    int x;
+    scanf("%d", &amp;x);
+    printf("Nilai: %d\n", x);
+    return 0;
+}</pre></details><details><summary>2. Variabel &amp; tipe data</summary><ul><li><code>int</code> bilangan bulat (±4 byte), <code>float</code>/<code>double</code> desimal, <code>char</code> satu karakter (petik tunggal), string pakai petik ganda</li><li>Nama variabel: tidak boleh diawali angka, tidak boleh pakai <code>-</code>, tidak boleh sama dengan kata kunci (boleh <code>_</code>)</li><li><code>const</code> membuat nilai tidak bisa diubah; <code>sizeof</code> memberi ukuran byte (<code>sizeof(char)</code> selalu 1)</li><li>Casting: <code>(int)3.9</code> menjadi 3 (desimal dipotong)</li><li>char adalah angka ASCII: <code>'A'</code> = 65, jadi <code>'A'+1</code> = <code>'B'</code></li><li><code>unsigned char</code> 255 + 1 berputar ke 0</li></ul></details><details><summary>3. Operator</summary><ul><li>Aritmatika: <code>+ - * / %</code>. Perkalian/bagi/sisa dulu, baru tambah/kurang</li><li>Int / int hasilnya int (<code>7/2</code> = 3). Pakai <code>5/2.0</code> untuk hasil 2.5</li><li><code>=</code> memberi nilai, <code>==</code> membandingkan, <code>!=</code> tidak sama, <code>&gt;=</code> <code>&lt;=</code></li><li>Logika: <code>&amp;&amp;</code> DAN, <code>||</code> ATAU, <code>!</code> TIDAK</li><li><code>x += 3</code> = <code>x = x + 3</code>, tapi <code>x *= 2+3</code> = <code>x = x * (2+3)</code></li><li><code>x++</code> pakai nilai lama dulu, <code>++x</code> menambah dulu. Ternary: <code>kondisi ? a : b</code></li></ul><div class="tip">Jebakan: <code>if(x = 5)</code> adalah assignment (selalu benar), bukan perbandingan.</div></details><details><summary>4. Percabangan (if, else, switch)</summary><p><code>if</code> jalan kalau syarat benar, <code>else</code> kalau salah. <code>switch</code> tanpa <code>break</code> akan "jatuh" ke case berikutnya.</p><pre class="snip">switch (2) {
+  case 1: printf("A");
+  case 2: printf("B");  // lanjut ke C
+  case 3: printf("C");
+}
+// output: BC</pre></details><details><summary>5. Perulangan (for, while, do-while)</summary><ul><li><code>for (awal; syarat; langkah)</code> untuk loop berhitung, <code>while</code> cek syarat di awal</li><li><code>do-while</code> cek di akhir, jadi minimal jalan sekali</li><li><code>break</code> keluar dari loop, <code>continue</code> lompat ke putaran berikutnya</li><li>Loop bersarang 3 x 2 = 6 kali eksekusi</li></ul><pre class="snip">for (int i = 0; i &lt; 10; i += 3)
+    printf("%d ", i);   // 0 3 6 9</pre></details><details><summary>6. Array &amp; string</summary><ul><li>Index mulai dari 0: <code>int a[5]</code> punya a[0] sampai a[4]</li><li>Inisialisasi sebagian, sisanya otomatis 0: <code>int a[5] = {1,2};</code></li><li>String = array char berakhir <code>'\0'</code>, jadi <code>"abc"</code> berukuran 4 byte</li><li><code>&lt;string.h&gt;</code>: <code>strlen</code> (panjang tanpa null), <code>strcpy</code> salin, <code>strcat</code> gabung, <code>strcmp</code> (0 jika sama)</li><li><code>&lt;ctype.h&gt;</code>: <code>isdigit</code> dan kawan-kawan. <code>&lt;math.h&gt;</code>: <code>sqrt</code>, <code>pow</code></li><li>Array 2D: <code>a[1][2]</code> = baris ke-2, kolom ke-3</li><li>Akses di luar batas array = undefined behavior</li></ul></details><details><summary>7. Fungsi</summary><ul><li>Fungsi tanpa nilai kembalian bertipe <code>void</code></li><li>C memakai pass by value: parameter hanya salinan, variabel asli tidak berubah</li><li>Variabel lokal hidup di dalam fungsinya; <code>static</code> di dalam fungsi menyimpan nilai antar pemanggilan</li><li>Rekursi wajib punya base case agar berhenti</li></ul><pre class="snip">int faktorial(int n) {
+    if (n &lt;= 1) return 1;       // base case
+    return n * faktorial(n - 1);
+}
+// faktorial(4) = 24</pre></details><details><summary>8. Pointer &amp; memori</summary><ul><li><code>&amp;x</code> alamat x, <code>*p</code> nilai yang ditunjuk p</li><li>Array yang dikirim ke fungsi menjadi pointer ke elemen pertama; <code>*(p+2)</code> sama dengan <code>p[2]</code></li><li>Pointer to pointer: <code>**pp</code> mengikuti dua tingkat sampai nilai</li><li><code>const int *p</code>: isi tidak boleh diubah lewat p</li><li><code>malloc</code> mengembalikan pointer atau NULL; wajib <code>free</code> agar tidak memory leak</li><li>Pointer 64-bit berukuran 8 byte</li></ul><pre class="snip">int x = 1;
+int *p = &amp;x;
+*p = 9;
+printf("%d", x);   // 9</pre></details><details><summary>9. Operator bit &amp; undefined behavior</summary><ul><li><code>&amp;</code> AND, <code>|</code> OR, <code>^</code> XOR: 6 &amp; 3 = 2, 6 ^ 3 = 5</li><li><code>x &lt;&lt; 2</code> sama dengan x dikali 4</li><li>Makro hanya mengganti teks: <code>KALI(2+3,4)</code> dengan <code>a*b</code> menjadi 2+3*4 = 14</li><li><code>static</code> pada fungsi level file membatasi fungsi hanya terlihat di file itu</li><li>Undefined behavior: <code>x = x++ + ++x</code>, akses array di luar batas, dan sejenisnya</li></ul></details>
+<div class="row"><a class="go" href="#/kuis" style="text-decoration:none;display:inline-block;padding:12px 24px;border-radius:999px">📝 Uji dengan kuis ➜</a></div>
+</section>
+
+</section>
+</main>
+
+</div>
+<script>(function(){
+/* Format soal: [pertanyaan, [pilihan], indexJawabanBenar, penjelasan, kode(opsional)] */
+const BANK={
+easy:[
+["Fungsi apa yang dipakai untuk menampilkan teks ke layar di C?",["print()","printf()","echo()","cout()"],1,"printf() dari <stdio.h> dipakai untuk mencetak ke layar."],
+["Header mana yang dipakai untuk printf dan scanf?",["<stdlib.h>","<string.h>","<stdio.h>","<math.h>"],2,"stdio = standard input output."],
+["Tipe data untuk bilangan bulat adalah...",["int","float","char","double"],0,"int menyimpan bilangan bulat, contoh 5, -3, 100."],
+["Apa output kode ini?",["5","7","x + 2","Error"],1,"x bernilai 5, ditambah 2 jadi 7.","int x = 5;\nprintf(\"%d\", x + 2);"],
+["Setiap pernyataan di C diakhiri dengan tanda...",[". (titik)",": (titik dua)","; (titik koma)",", (koma)"],2,"Titik koma menandai akhir sebuah pernyataan."],
+["Format specifier untuk mencetak int adalah...",["%d","%f","%c","%s"],0,"%d untuk int, %f untuk float, %c untuk char, %s untuk string."],
+["Format specifier untuk mencetak float adalah...",["%d","%c","%s","%f"],3,"%f dipakai untuk float dan double."],
+["Format specifier untuk satu karakter adalah...",["%c","%d","%f","%l"],0,"%c mencetak satu karakter."],
+["Cara menulis komentar satu baris di C adalah...",["// komentar","## komentar","<!-- komentar -->","-- komentar"],0,"// untuk satu baris, /* ... */ untuk beberapa baris."],
+["Program C mulai berjalan dari fungsi...",["start()","begin()","main()","run()"],2,"Selalu dimulai dari main()."],
+["Apa arti return 0; di akhir main()?",["Program gagal","Program selesai dengan sukses","Program mengulang","Program berhenti error"],1,"Nilai 0 berarti program selesai dengan normal."],
+["Kenapa scanf(\"%d\", &x) memakai tanda &?",["Supaya cepat","Untuk memberi alamat variabel x","Untuk menambah nilai","Tidak ada gunanya"],1,"scanf perlu alamat memori x supaya bisa mengisi nilainya."],
+["Index pertama array di C adalah...",["0","1","-1","Bebas"],0,"Array dimulai dari 0. Array arr[5] punya index 0 sampai 4."],
+["Hasil dari 5 + 3 * 2 adalah...",["16","11","13","10"],1,"Perkalian dulu: 3*2=6, lalu 5+6=11."],
+["Hasil dari 10 % 3 adalah...",["3","1","0","3.33"],1,"% adalah sisa bagi. 10 dibagi 3 sisa 1."],
+["Apa fungsi i++ ?",["Mengurangi i 1","Menambah i 1","Mengalikan i 2","Menghapus i"],1,"i++ menambah nilai i sebanyak 1."],
+["Karakter tunggal ditulis dengan tanda...",["'A' (petik tunggal)","\"A\" (petik ganda)","`A`","(A)"],0,"Char pakai petik tunggal, string pakai petik ganda."],
+["Teks (string) ditulis dengan tanda...",["'teks'","\"teks\"","{teks}","[teks]"],1,"String memakai petik ganda."],
+["Operator untuk membandingkan apakah dua nilai SAMA adalah...",["=","==","!=","=>"],1,"== membandingkan, = memberi nilai."],
+["Operator = berfungsi untuk...",["Membandingkan","Memberi nilai ke variabel","Menjumlah","Mengurangi"],1,"x = 5 artinya isi x dengan 5."],
+["Kata kunci untuk membuat percabangan (kondisi) adalah...",["when","if","case","check"],1,"if (kondisi) { ... }"],
+["Apa fungsi \\n di dalam printf?",["Tab","Baris baru","Menghapus","Spasi"],1,"\\n pindah ke baris baru."],
+["Berapa kali 'Hai' dicetak?",["3","4","5","0"],1,"i = 0,1,2,3 lalu berhenti saat i = 4.","for(int i = 0; i < 4; i++){\n  printf(\"Hai \");\n}"],
+["Loop yang mengecek syarat lebih dulu sebelum menjalankan isi adalah...",["while","do-while saja","goto","switch"],0,"while mengecek syarat di awal."],
+["Hasil dari 7 / 2 pada int adalah...",["3.5","3","4","2"],1,"Pembagian dua int menghasilkan int, jadi 3."],
+["Tipe data dengan ketelitian desimal lebih tinggi daripada float adalah...",["short","double","char","bool"],1,"double punya presisi lebih besar dari float."],
+["Nama variabel yang valid adalah...",["2angka","my_var","my-var","int"],1,"Nama tidak boleh diawali angka, tidak boleh pakai tanda minus, dan tidak boleh sama dengan kata kunci."],
+["Nama variabel yang TIDAK valid adalah...",["nilai1","_data","2nama","total"],2,"Nama variabel tidak boleh diawali angka."],
+["Cara komentar beberapa baris di C adalah...",["/* komentar */","// komentar //","<# komentar #>","{ komentar }"],0,"Dibuka dengan /* dan ditutup dengan */."],
+["Apa fungsi #include <stdio.h> ?",["Membuat variabel","Menyertakan library/header","Menghapus file","Menjalankan loop"],1,"#include memasukkan header supaya fungsinya bisa dipakai."],
+["Kapan blok else dijalankan?",["Saat if bernilai benar","Saat if bernilai salah","Selalu","Tidak pernah"],1,"else dijalankan kalau kondisi if tidak terpenuhi."],
+["Berapa nilai x?",["5","3","8","15"],2,"x += 3 sama dengan x = x + 3, jadi 8.","int x = 5;\nx += 3;"],
+["Operator && artinya...",["ATAU","DAN","TIDAK","SAMA DENGAN"],1,"&& bernilai benar kalau kedua sisi benar."],
+["Operator || artinya...",["DAN","ATAU","TIDAK","KURANG DARI"],1,"|| bernilai benar kalau salah satu sisi benar."],
+["Operator ! artinya...",["DAN","ATAU","TIDAK (negasi)","Faktorial"],2,"!benar jadi salah, dan sebaliknya."],
+["Perintah untuk keluar dari loop adalah...",["stop","exit loop","break","end"],2,"break langsung menghentikan loop."],
+["Loop yang pasti berjalan minimal satu kali adalah...",["for","while","do-while","if"],2,"do-while mengecek syarat di akhir, jadi isinya jalan dulu sekali."],
+["Kata kunci untuk membuat nilai yang tidak boleh diubah adalah...",["fixed","const","static","final"],1,"const int x = 5; berarti x tidak bisa diubah."],
+["Format specifier untuk string adalah...",["%c","%d","%s","%t"],2,"%s untuk string."],
+["Bahasa C diciptakan oleh...",["Dennis Ritchie","Bill Gates","Linus Torvalds","Mark Zuckerberg"],0,"Dennis Ritchie membuat C di Bell Labs sekitar tahun 1972."],
+["Apa fungsi scanf()?", ["Mencetak teks", "Membaca input dari keyboard", "Menghapus layar", "Menutup program"], 1, "scanf membaca input dari pengguna dan menyimpannya ke variabel."],
+["Tipe data char dipakai untuk menyimpan...", ["Satu karakter", "Teks panjang", "Bilangan desimal", "Nilai benar/salah"], 0, "char menyimpan satu karakter, contoh 'A'."],
+["Hasil dari 9 / 3 pada int adalah...", ["3", "6", "12", "0"], 0, "9 dibagi 3 sama dengan 3."],
+["Apa output kode ini?", ["8", "16", "4", "Error"], 1, "4 * 4 = 16.", "int a = 4;\nprintf(\"%d\", a * a);"],
+["Operator != artinya...", ["Sama dengan", "Tidak sama dengan", "Lebih besar", "Negasi"], 1, "!= bernilai benar kalau kedua nilai berbeda."],
+["Cara mendeklarasikan array berisi 5 int adalah...", ["int arr[5];", "int arr(5);", "array int 5;", "int [5]arr;"], 0, "Bentuknya: tipe nama[ukuran];"],
+["Kata kunci untuk loop dengan hitungan adalah...", ["for", "repeat", "loop", "foreach"], 0, "for (awal; syarat; langkah) { ... }"],
+["Operator untuk 'lebih besar atau sama dengan' adalah...", ["=>", ">=", "==", ">>"], 1, ">= bernilai benar kalau kiri lebih besar atau sama dengan kanan."],
+["Tipe data untuk bilangan desimal adalah...", ["int", "char", "float", "void"], 2, "float (dan double) menyimpan bilangan desimal."],
+["Fungsi yang tidak mengembalikan nilai memakai tipe...", ["null", "void", "empty", "none"], 1, "void artinya tidak ada nilai kembalian."],
+["Berapa nilai x?", ["14", "6", "4", "10"], 1, "x -= 4 sama dengan x = x - 4, jadi 6.", "int x = 10;\nx -= 4;"],
+["Header untuk fungsi sqrt() dan pow() adalah...", ["<stdio.h>", "<math.h>", "<string.h>", "<ctype.h>"], 1, "Fungsi matematika ada di <math.h>."],
+["Apa output kode ini?", ["20", "14", "24", "9"], 1, "Perkalian dulu: 3*4=12, lalu 2+12=14.", "printf(\"%d\", 2 + 3 * 4);"],
+["Fungsi untuk menggabungkan dua string adalah...", ["strcpy", "strcat", "strlen", "strcmp"], 1, "strcat menempelkan string kedua di belakang string pertama."],
+["Hasil dari 17 % 5 adalah...", ["3", "2", "12", "0"], 1, "17 dibagi 5 = 3 sisa 2."],
+["Apa output kode ini?", ["0", "2", "3", "4"], 2, "Loop berjalan sampai i = 3, lalu berhenti.", "int i = 0;\nwhile(i < 3){ i++; }\nprintf(\"%d\", i);"],
+["Kurung kurawal { } dipakai untuk...", ["Komentar", "Membungkus blok kode", "Memanggil fungsi", "Membuat string"], 1, "{ } membatasi isi fungsi, if, atau loop."],
+["Karakter '\\0' menandai...", ["Awal string", "Akhir string", "Spasi", "Baris baru"], 1, "Karakter null menandai akhir string di C."],
+["Apa output kode ini?", ["A", "B", "66", "Error"], 1, "'A' + 1 menjadi 'B' (kode ASCII 66), dicetak sebagai karakter.", "char c = 'A';\nprintf(\"%c\", c + 1);"],
+["Simbol untuk mengambil alamat variabel adalah...", ["*", "&", "#", "@"], 1, "&x berarti alamat memori dari x."]
+],
+mid:[
+["Apa output kode ini?",["2.5","2.0","2","3"],1,"10/4 adalah pembagian int = 2, lalu disimpan ke float jadi 2.0.","float f = 10 / 4;\nprintf(\"%.1f\", f);"],
+["Apa output kode ini?",["5","6","4","Error"],0,"x++ (post-increment) memakai nilai lama dulu (5), baru menambah.","int x = 5;\nprintf(\"%d\", x++);"],
+["Apa output kode ini?",["5","6","7","4"],1,"++x (pre-increment) menambah dulu jadi 6, baru dipakai.","int x = 5;\nprintf(\"%d\", ++x);"],
+["Apa output kode ini?",["6","3","123","0"],0,"1 + 2 + 3 = 6.","int arr[3] = {1, 2, 3};\nint sum = 0;\nfor(int i = 0; i < 3; i++) sum += arr[i];\nprintf(\"%d\", sum);"],
+["strlen(\"halo\") menghasilkan...",["3","4","5","Error"],1,"strlen menghitung jumlah karakter tanpa karakter null: h,a,l,o = 4."],
+["Apa output kode ini?",["3","4","5","8"],1,"Ada 3 huruf + 1 karakter null '\\0' = 4 byte.","char s[] = \"abc\";\nprintf(\"%d\", (int)sizeof(s));"],
+["Apa output kode ini?",["Alamat x","7","*p","Error"],1,"*p mengambil nilai yang ditunjuk pointer p, yaitu x = 7.","int x = 7;\nint *p = &x;\nprintf(\"%d\", *p);"],
+["Apa output kode ini?",["B","BC","ABC","C"],1,"Tanpa break, eksekusi 'jatuh' ke case berikutnya: B lalu C.","switch(2){\n  case 1: printf(\"A\");\n  case 2: printf(\"B\");\n  case 3: printf(\"C\");\n}"],
+["Apa output kode ini?",["10","5","0","Error"],1,"C memakai pass by value, jadi a di fungsi hanya salinan. x tetap 5.","void f(int a){ a = 10; }\nint main(){\n  int x = 5;\n  f(x);\n  printf(\"%d\", x);\n}"],
+["Apa output kode ini?",["12345","1245","123","345"],1,"continue melewati putaran saat i == 3.","for(int i = 1; i <= 5; i++){\n  if(i == 3) continue;\n  printf(\"%d\", i);\n}"],
+["Berapa kali printf dijalankan?",["5","6","3","2"],1,"3 x 2 = 6 kali.","for(int i = 0; i < 3; i++)\n  for(int j = 0; j < 2; j++)\n    printf(\"*\");"],
+["Apa output kode ini?",["Sampah","0","1","Error"],1,"Elemen yang tidak diisi pada inisialisasi sebagian otomatis 0.","int arr[5] = {1, 2};\nprintf(\"%d\", arr[4]);"],
+["Hasil dari 5 / 2.0 adalah...",["2","2.5","3","2.0 saja"],1,"Kalau salah satu operand desimal, hasilnya desimal: 2.5."],
+["Apa output kode ini?",["3.9","3","4","Error"],1,"Casting ke int memotong bagian desimal.","printf(\"%d\", (int)3.9);"],
+["Apa output kode ini?",["10","20","5","3"],0,"Ternary: kondisi ? nilai_jika_benar : nilai_jika_salah. 5 > 3 benar, jadi 10.","int a = 5;\nprintf(\"%d\", a > 3 ? 10 : 20);"],
+["strcmp(a, b) mengembalikan 0 jika...",["a lebih besar dari b","a dan b sama","a lebih kecil dari b","Selalu error"],1,"0 artinya kedua string identik."],
+["Header yang dipakai untuk strcpy dan strlen adalah...",["<stdio.h>","<string.h>","<math.h>","<ctype.h>"],1,"Fungsi string ada di <string.h>."],
+["Berapa hasil faktorial(4)?",["10","24","16","12"],1,"4 x 3 x 2 x 1 = 24.","int faktorial(int n){\n  if(n <= 1) return 1;\n  return n * faktorial(n - 1);\n}"],
+["Variabel yang dideklarasikan di dalam fungsi disebut...",["Global","Lokal","Statis saja","Konstan"],1,"Variabel lokal hanya hidup di dalam fungsinya."],
+["Apa output kode ini?",["111","123","000","1 2 3 tidak tentu"],1,"Variabel static menyimpan nilainya antar pemanggilan fungsi.","void hitung(){\n  static int n = 0;\n  n++;\n  printf(\"%d\", n);\n}\n// hitung() dipanggil 3 kali"],
+["int m[2][3] punya berapa elemen?",["5","6","2","3"],1,"2 x 3 = 6 elemen."],
+["Hasil dari 5 & 3 (bitwise AND) adalah...",["1","7","8","2"],0,"101 & 011 = 001 = 1."],
+["Hasil dari 5 | 3 (bitwise OR) adalah...",["1","7","6","8"],1,"101 | 011 = 111 = 7."],
+["Hasil dari 1 << 3 adalah...",["3","6","8","4"],2,"Geser kiri 3 kali sama dengan 1 x 2 x 2 x 2 = 8."],
+["Apa output kode ini?",["3.14159","3.14","3.1","3"],1,"%.2f menampilkan 2 angka di belakang koma.","printf(\"%.2f\", 3.14159);"],
+["malloc tersedia di header...",["<stdlib.h>","<stdio.h>","<string.h>","<memory.h>"],0,"malloc dan free ada di <stdlib.h>."],
+["Pointer yang tidak menunjuk ke mana-mana diberi nilai...",["0.0","NULL","VOID","EMPTY"],1,"NULL menandai pointer kosong."],
+["arr[1] sama artinya dengan...",["*(arr + 1)","&arr + 1","arr * 1","*arr + 1"],0,"Notasi array adalah bentuk lain dari aritmetika pointer."],
+["Untuk membaca string dengan scanf, kita menulis...",["scanf(\"%s\", &nama);","scanf(\"%s\", nama);","scanf(nama);","scanf(\"%c\", nama);"],1,"Nama array sudah berupa alamat, jadi tidak perlu &."],
+["Berapa nilai sizeof(char)?",["1","2","4","8"],0,"Menurut standar C, sizeof(char) selalu 1."],
+["Apa output kode ini?",["0","1","2","B"],1,"enum memberi nilai berurutan mulai dari 0: A=0, B=1, C=2.","enum {A, B, C};\nprintf(\"%d\", B);"],
+["Untuk mengakses anggota struct dari variabel biasa dipakai tanda...",["->","."," ::","#"],1,"Pakai titik: mhs.nama. Panah -> dipakai untuk pointer ke struct."],
+["Fungsi typedef adalah...",["Membuat nama baru untuk sebuah tipe","Menghapus tipe","Membuat loop","Menghitung ukuran"],0,"Contoh: typedef unsigned int uint;"],
+["#define PI 3.14 disebut...",["Fungsi","Makro","Struct","Pointer"],1,"Preprocessor mengganti PI dengan 3.14 sebelum kompilasi."],
+["Hasil dari 2 + 3 * 4 % 5 adalah...",["4","6","14","2"],0,"3*4 = 12, 12 % 5 = 2, lalu 2 + 2 = 4."],
+["Apa nilai i setelah loop selesai?",["3","4","2","5"],1,"i naik terus sampai pengecekan 3 < 3 gagal, saat itu i sudah jadi 4.","int i = 0;\nwhile(i++ < 3);\nprintf(\"%d\", i);"],
+["Apa output kode ini?",["A","65","a","Error"],1,"Karakter disimpan sebagai angka kode ASCII. 'A' = 65.","char c = 'A';\nprintf(\"%d\", c);"],
+["Apa output kode ini?",["a","b","98 saja","c"],1,"'a' + 1 = 98, dan %c mencetaknya sebagai 'b'.","printf(\"%c\", 'a' + 1);"],
+["Berapa nilai a?",["7","3","4","0"],1,"a %= 4 sama dengan a = a % 4, hasilnya 3.","int a = 7;\na %= 4;"],
+["Fungsi dengan tipe kembalian void artinya...",["Mengembalikan 0","Tidak mengembalikan nilai","Mengembalikan teks","Tidak boleh dipanggil"],1,"void = tidak ada nilai yang dikembalikan."],
+["Apa output kode ini?", ["1", "2", "3", "2.5"], 1, "3/2 = 1 dan 3%2 = 1, jadi 1 + 1 = 2.", "int a = 3, b = 2;\nprintf(\"%d\", a / b + a % b);"],
+["Apa output kode ini?", ["A", "B", "AB", "Error"], 1, "x > 5 benar tapi x < 8 salah, && butuh keduanya benar, jadi else jalan.", "int x = 10;\nif(x > 5 && x < 8) printf(\"A\");\nelse printf(\"B\");"],
+["Apa output kode ini?", ["Tidak ada", "0", "01", "Error"], 1, "do-while menjalankan isi sekali dulu sebelum cek syarat.", "int i = 0;\ndo { printf(\"%d\", i); i++; } while(i < 0);"],
+["Apa output kode ini?", ["hello", "jello", "j", "Error"], 1, "Elemen pertama diganti 'j', jadi jello.", "char s[10] = \"hello\";\ns[0] = 'j';\nprintf(\"%s\", s);"],
+["Apa output kode ini?", ["11", "12", "13", "18"], 2, "a[1] = 6 dan a[2] = 7, jumlahnya 13.", "int a[3] = {5, 6, 7};\nprintf(\"%d\", a[1] + a[2]);"],
+["Apa output kode ini?", ["1", "9", "Alamat x", "Error"], 1, "*p = 9 mengubah nilai x lewat pointer.", "int x = 1;\nint *p = &x;\n*p = 9;\nprintf(\"%d\", x);"],
+["Apa output kode ini?", ["10", "25", "5", "Error"], 1, "kuadrat(5) mengembalikan 5*5 = 25.", "int kuadrat(int n){ return n * n; }\nint main(){ printf(\"%d\", kuadrat(5)); }"],
+["Variabel static di dalam fungsi...", ["Dibuat ulang tiap dipanggil", "Nilainya bertahan antar pemanggilan", "Tidak bisa diubah", "Menjadi global di file lain"], 1, "static menyimpan nilai di antara pemanggilan fungsi."],
+["Apa output kode ini?", ["0 3 6 9", "3 6 9", "0 3 6", "0 1 2 3"], 0, "i naik 3 tiap putaran: 0, 3, 6, 9 (12 melebihi batas).", "for(int i = 0; i < 10; i += 3)\n  printf(\"%d \", i);"],
+["Fungsi isdigit() ada di header...", ["<ctype.h>", "<math.h>", "<stdio.h>", "<stdlib.h>"], 0, "Fungsi pengecek karakter ada di <ctype.h>."],
+["Apa output kode ini?", ["3.14159", "3.14", "3.1", "3"], 1, "%.2f membulatkan ke 2 angka di belakang koma.", "printf(\"%.2f\", 3.14159);"],
+["Apa output kode ini?", ["42|", "   42|", "42   |", "Error"], 1, "%5d memakai lebar 5 karakter, rata kanan, jadi ada 3 spasi di depan.", "printf(\"%5d|\", 42);"],
+["Apa output kode ini?", ["13", "25", "10", "15"], 1, "x *= 2 + 3 sama dengan x = x * (2 + 3) = 25.", "int x = 5;\nx *= 2 + 3;\nprintf(\"%d\", x);"],
+["Apa output kode ini?", ["5 10", "10 5", "10 10", "5 5"], 1, "Menukar nilai lewat variabel sementara t.", "int a = 5, b = 10;\nint t = a; a = b; b = t;\nprintf(\"%d %d\", a, b);"],
+["Apa output kode ini?", ["1", "2", "3", "5"], 1, "Loop berhenti (break) saat i == 2.", "int i;\nfor(i = 0; i < 5; i++){\n  if(i == 2) break;\n}\nprintf(\"%d\", i);"],
+["sizeof(int) pada kebanyakan komputer modern adalah...", ["1", "2", "4", "8"], 2, "int umumnya 4 byte."],
+["Apa output kode ini?", ["h", "a", "i", "Error"], 1, "s[1] adalah karakter kedua, yaitu 'a'.", "char *s = \"hai\";\nprintf(\"%c\", s[1]);"],
+["Apa output kode ini?", ["A", "65", "97", "Error"], 1, "%d pada karakter mencetak kode ASCII-nya, 'A' = 65.", "printf(\"%d\", 'A');"],
+["Apa output kode ini?", ["3", "6", "9", "0"], 1, "3 x 2 x 1 = 6.", "int n = 3, r = 1;\nwhile(n > 0){ r *= n; n--; }\nprintf(\"%d\", r);"],
+["Saat array dikirim ke fungsi, yang dikirim sebenarnya adalah...", ["Salinan seluruh array", "Alamat elemen pertama", "Hanya ukuran array", "Tidak bisa dikirim"], 1, "Array 'meluruh' menjadi pointer ke elemen pertama."]
+],
+hard:[
+["Apa output kode ini?",["10","20","30","Error"],2,"p + 2 menunjuk elemen ke-3, nilainya 30.","int a[] = {10, 20, 30};\nint *p = a;\nprintf(\"%d\", *(p + 2));"],
+["Pada int *p, p++ memindahkan pointer sebanyak...",["1 byte","sizeof(int) byte","2 byte","Tidak berubah"],1,"Aritmetika pointer dihitung per ukuran tipe yang ditunjuk."],
+["Cara menghitung jumlah elemen array arr adalah...",["sizeof(arr)","sizeof(arr)/sizeof(arr[0])","strlen(arr)","length(arr)"],1,"Ukuran total dibagi ukuran satu elemen."],
+["Apa output kode ini?",["5","9","Alamat x","Error"],1,"*p = 9 mengubah nilai x lewat pointer.","int x = 5;\nint *p = &x;\n*p = 9;\nprintf(\"%d\", x);"],
+["Pointer ke pointer int dideklarasikan dengan...",["int *p;","int **pp;","int &pp;","int p**;"],1,"Dua bintang artinya pointer yang menunjuk pointer."],
+["Apa kesalahan umum setelah memakai malloc?",["Lupa memanggil free (memory leak)","Memakai if","Memakai return","Memakai printf"],0,"Memori heap yang tidak di-free akan bocor."],
+["Apa akibat memakai pointer setelah free(p)?",["Aman","Undefined behavior (use-after-free)","Otomatis di-malloc ulang","Program pasti berhenti dengan pesan jelas"],1,"Memori sudah dikembalikan, mengaksesnya adalah undefined behavior."],
+["Apa yang salah dari kode ini?",["Tidak ada","Mengubah string literal adalah undefined behavior","Salah tipe","Kurang titik koma"],1,"String literal berada di memori read-only. Pakai char s[] = \"hi\"; kalau mau diubah.","char *s = \"hi\";\ns[0] = 'H';"],
+["Apa output kode ini?",["4.0","5.0","4","2.5"],0,"5/2 = 2 (int), lalu 2 * 2.0 = 4.0.","printf(\"%.1f\", 5 / 2 * 2.0);"],
+["printf(\"%d %d\", i++, i++); termasuk...",["Aman, selalu 5 6","Undefined/unspecified behavior","Selalu 6 5","Compile error pasti"],1,"Urutan evaluasi argumen tidak ditentukan dan memodifikasi variabel dua kali tanpa sequence point berbahaya."],
+["Deklarasi pointer ke fungsi yang menerima dua int dan mengembalikan int adalah...",["int *fp(int, int);","int (*fp)(int, int);","int fp*(int, int);","fp int(int, int);"],1,"Kurung di sekitar *fp penting agar ini pointer ke fungsi."],
+["Pada umumnya, sizeof(struct {char a; int b;}) bernilai...",["5","8","4","6"],1,"Padding ditambahkan agar int rata di alamat kelipatan 4, jadi total 8."],
+["Pada umumnya, sizeof(union {int i; char c;}) adalah...",["5","4","1","8"],1,"Ukuran union sebesar anggota terbesar, yaitu int (4)."],
+["static pada variabel global berarti...",["Terlihat hanya di file itu","Tidak bisa diubah","Disimpan di register","Otomatis 1"],0,"static memberi internal linkage: hanya terlihat dalam satu file."],
+["volatile berarti...",["Variabel tidak boleh diubah","Compiler tidak boleh mengoptimalkan akses variabel itu","Variabel disimpan di heap","Variabel otomatis nol"],1,"Dipakai untuk variabel yang bisa berubah di luar kendali program, misalnya register hardware."],
+["Apa bahaya strcpy tanpa cek panjang?",["Lambat","Buffer overflow","Tidak ada","Salah tipe data"],1,"Kalau sumber lebih panjang dari tujuan, data menimpa memori lain."],
+["Pada int * const p = &a; yang konstan adalah...",["Nilai yang ditunjuk","Pointer p-nya (tidak bisa menunjuk ke tempat lain)","Keduanya","Tidak ada"],1,"const setelah * membuat pointer-nya tidak bisa diubah."],
+["Pernyataan yang benar tentang a[i] dan i[a] adalah...",["Keduanya salah","Keduanya valid dan sama","Hanya a[i] valid","i[a] membuat error"],1,"a[i] adalah *(a+i), dan penjumlahan itu komutatif."],
+["Apa output kode ini?",["255","256","0","Error"],2,"unsigned char hanya sampai 255, lalu wrap-around ke 0.","unsigned char c = 255;\nc++;\nprintf(\"%d\", c);"],
+["Apa output kode ini?",["0","1","65","32"],1,"'a' (97) lebih besar dari 'A' (65), jadi benar = 1.","printf(\"%d\", 'a' > 'A');"],
+["Apa output kode ini?",["Tidak ada","Y","N","Error"],1,"x = 5 adalah assignment, nilainya 5 (benar), jadi masuk if.","int x = 0;\nif(x = 5) printf(\"Y\");\nelse printf(\"N\");"],
+["Berapa fib(6) jika fib(0)=0 dan fib(1)=1?",["5","8","13","6"],1,"Deret: 0,1,1,2,3,5,8 sehingga fib(6) = 8."],
+["Berapa hasil 12 & (12 - 1)?",["8","4","0","11"],0,"1100 & 1011 = 1000 = 8. Trik ini menghapus bit 1 paling kanan."],
+["Berapa hasil ~5 pada int 32-bit (two's complement)?",["-5","-6","6","0"],1,"~x = -x - 1, jadi ~5 = -6."],
+["Pada C99 ke atas, hasil -7 / 2 adalah...",["-4","-3","-3.5","3"],1,"Pembagian int dipotong ke arah nol: -3. Sisa -7 % 2 adalah -1."],
+["Pada sistem 64-bit umumnya, sizeof(int *) adalah...",["2","4","8","16"],2,"Pointer 64-bit berukuran 8 byte."],
+["Fungsi realloc dipakai untuk...",["Mengubah ukuran blok memori yang sudah dialokasikan","Menghapus variabel","Menyalin string","Membuka file"],0,"realloc memperbesar atau memperkecil blok malloc."],
+["Apa hasil SQ(2+3)?",["25","11","10","Error"],1,"Makro diganti teks: 2+3*2+3 = 11. Perlu kurung: ((x)*(x)).","#define SQ(x) x*x\nprintf(\"%d\", SQ(2+3));"],
+["Di dalam fungsi, sizeof(parameter_array) memberi ukuran...",["Seluruh array","Ukuran pointer","0","Error"],1,"Array yang dikirim ke fungsi 'meluruh' menjadi pointer."],
+["Kenapa printf(\"%s\", arr) berbahaya pada char arr[3] = \"abc\"; ?",["Tidak ada masalah","Tidak ada karakter null di akhir","Tipe salah","Terlalu panjang"],1,"Array 3 byte penuh oleh abc sehingga tidak muat '\\0', %s membaca melewati batas."],
+["Apa masalah fungsi yang mengembalikan alamat variabel lokalnya?",["Aman","Dangling pointer, variabel sudah hilang setelah fungsi selesai","Lambat","Tidak bisa dikompilasi"],1,"Variabel lokal hidup di stack dan dibersihkan saat fungsi berakhir."],
+["Apa output kode ini?",["10","Alamat","Error","0"],0,"**q mengikuti dua pointer sampai ke nilai a.","int a = 10;\nint *p = &a;\nint **q = &p;\nprintf(\"%d\", **q);"],
+["Operator -> dipakai untuk...",["Mengakses anggota struct lewat pointer","Menunjuk ke fungsi","Mengakses array","Membuat komentar"],0,"p->x sama dengan (*p).x."],
+["Apa output kode ini?",["0","1","2","Error"],1,"0 && ... bernilai salah lebih dulu, sisi kanan (b++) tidak pernah dievaluasi (short-circuit).","int b = 1;\n0 && b++;\nprintf(\"%d\", b);"],
+["Ekspresi switch di C boleh bertipe...",["Integer/char","String","float","Semua tipe"],0,"switch hanya menerima tipe bilangan bulat (termasuk char dan enum)."],
+["printf(\"abc\") mengembalikan nilai...",["0","3","1","Tidak ada nilai"],1,"printf mengembalikan jumlah karakter yang dicetak."],
+["Hasil dari 1 << 2 + 1 adalah...",["5","8","7","3"],1,"+ lebih tinggi prioritasnya dari <<, jadi 1 << 3 = 8."],
+["Berapa nilai x?",["1","2","3","Error"],2,"Operator koma mengevaluasi dari kiri ke kanan dan memakai nilai terakhir.","int x = (1, 2, 3);"],
+["Variabel lokal biasa umumnya disimpan di...",["Heap","Stack","File","Register saja"],1,"Variabel lokal di stack, hasil malloc di heap."],
+["Kenapa getchar() mengembalikan int, bukan char?",["Supaya bisa menampung EOF (-1)","Supaya lebih cepat","Karena aturan lama saja","Tidak ada alasan"],0,"EOF bernilai negatif yang tidak bisa dibedakan dari karakter jika dipaksa ke char."],
+["Apa output kode ini?", ["3", "4", "2", "Error"], 1, "p menunjuk a[1], jadi p[2] adalah a[3] = 4.", "int a[] = {1, 2, 3, 4};\nint *p = a + 1;\nprintf(\"%d\", p[2]);"],
+["Apa output kode ini?", ["10", "20", "7", "2"], 1, "Geser kiri 2 bit sama dengan dikali 4: 5*4 = 20.", "int x = 5;\nprintf(\"%d\", x << 2);"],
+["Apa output kode ini?", ["2", "3", "7", "1"], 0, "6 = 110 dan 3 = 011, AND bit demi bit = 010 = 2.", "printf(\"%d\", 6 & 3);"],
+["Apa output kode ini?", ["5", "7", "2", "9"], 0, "XOR: 110 ^ 011 = 101 = 5.", "printf(\"%d\", 6 ^ 3);"],
+["malloc() mengembalikan...", ["Pointer ke blok memori, atau NULL jika gagal", "Selalu int", "Salinan variabel", "Nilai boolean"], 0, "Selalu cek hasilnya terhadap NULL."],
+["Kenapa memori hasil malloc harus di-free()?", ["Supaya tidak terjadi memory leak", "Supaya kode lebih pendek", "Wajib oleh compiler", "Agar variabel terhapus otomatis"], 0, "Memori heap tidak dibebaskan otomatis, jadi harus di-free."],
+["Apa output kode ini?", ["Alamat", "5", "Error", "0"], 1, "**pp mengikuti dua tingkat pointer sampai ke nilai a = 5.", "int a = 5;\nint *p = &a;\nint **pp = &p;\nprintf(\"%d\", **pp);"],
+["Mengakses a[10] pada array int a[5] adalah...", ["Undefined behavior", "Selalu bernilai 0", "Pasti compile error", "Otomatis aman"], 0, "C tidak mengecek batas array; hasilnya tidak terdefinisi."],
+["Ekspresi seperti x = x++ + ++x tidak bisa diprediksi karena...", ["Undefined behavior: variabel diubah berkali-kali tanpa sequence point", "Compilernya lama", "Selalu menghasilkan 0", "Tipe data overflow"], 0, "Standar C tidak menentukan urutan efeknya."],
+["Ukuran pointer pada sistem 64-bit umumnya...", ["2 byte", "4 byte", "8 byte", "16 byte"], 2, "Alamat 64-bit butuh 8 byte."],
+["Apa output kode ini?", ["a", "b", "c", "\\0"], 2, "*(p + 2) adalah elemen ketiga, yaitu 'c'.", "char s[] = \"abc\";\nchar *p = s;\nprintf(\"%c\", *(p + 2));"],
+["Apa output kode ini?", ["3", "5", "6", "4"], 2, "a[1][2] adalah baris kedua, kolom ketiga = 6.", "int a[2][3] = {{1,2,3},{4,5,6}};\nprintf(\"%d\", a[1][2]);"],
+["sizeof(char) selalu bernilai...", ["1", "2", "4", "Tergantung komputer"], 0, "Menurut standar C, sizeof(char) selalu 1."],
+["Apa output kode ini?", ["256", "0", "-1", "255"], 1, "unsigned char 255 + 1 berputar kembali ke 0 (wraparound).", "unsigned char c = 255;\nc++;\nprintf(\"%d\", c);"],
+["Pada deklarasi const int *p, yang tidak boleh diubah lewat p adalah...", ["Nilai yang ditunjuk", "Pointer p itu sendiri", "Keduanya", "Tidak ada"], 0, "const int * berarti isinya read-only, p masih boleh menunjuk ke tempat lain."],
+["Apa output kode ini?", ["9", "10", "12", "1"], 1, "10/3=3, 3*3=9, ditambah 10%3=1, jadi 10.", "int a = 10, b = 3;\nprintf(\"%d\", a / b * b + a % b);"],
+["Apa output kode ini?", ["20", "14", "24", "9"], 1, "Makro hanya mengganti teks: 2+3*4 = 14, bukan (2+3)*4.", "#define KALI(a,b) a*b\nprintf(\"%d\", KALI(2+3, 4));"],
+["Fungsi yang dideklarasikan static di level file artinya...", ["Hanya terlihat di file itu", "Berjalan lebih cepat", "Tidak bisa dipanggil", "Otomatis dijalankan"], 0, "static membatasi visibilitas fungsi ke file sumbernya."],
+["Apa output kode ini?", ["Y", "N", "Error", "Tidak ada"], 0, "x = 5 adalah assignment (bukan perbandingan), nilainya 5 (benar), jadi Y.", "int x = 0;\nif(x = 5) printf(\"Y\");\nelse printf(\"N\");"],
+["Untuk apa fungsi rekursi wajib punya base case?", ["Supaya berhenti dan tidak stack overflow", "Supaya lebih cepat", "Supaya memakai pointer", "Tidak wajib"], 0, "Tanpa kondisi berhenti, fungsi memanggil dirinya tanpa akhir."]
+]
+};
+const MODES={
+  easy:{name:"Gampang",ic:"🍌",desc:"Dasar-dasar C"},
+  mid:{name:"Sedang",ic:"🍌🍌",desc:"Fungsi, array, pointer dasar, tebak output"},
+  hard:{name:"Sulit",ic:"🍌🍌🍌",desc:"Pointer, memori, undefined behavior, trik bit"}
+};
+const PER=30;
+const $=id=>document.getElementById(id);
+
+/* riwayat soal yang sudah keluar (disimpan di browser jika bisa) */
+let seen={easy:[],mid:[],hard:[]};
+try{const s=JSON.parse(localStorage.getItem("pisangC_seen")||"null");if(s&&s.easy&&s.mid&&s.hard)seen=s}catch(e){}
+function saveSeen(){try{localStorage.setItem("pisangC_seen",JSON.stringify(seen))}catch(e){}}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+let mode=null,set=[],i=0,score=0,done=false;
+
+
+const LV={easy:{n:1,tag:"Pemula"},mid:{n:2,tag:"Menengah"},hard:{n:3,tag:"Mahir"}};
+const BAN='<svg class="bn" viewBox="0 0 64 64" aria-hidden="true"><g transform="translate(5 2)"><path d="M44 10C50 26 46 46 22 56C16 58 8 56 8 50C8 47 11 46 14 46C28 42 34 28 34 12C34 8 40 6 44 10Z" fill="url(#bnG)" stroke="#c98a00" stroke-width="2.4" stroke-linejoin="round"/><path d="M40 15C41 28 36 39 22 48" fill="none" stroke="#fff6b0" stroke-width="3" stroke-linecap="round" opacity=".7"/><path d="M37 9L40 2L46 4L43 11Z" fill="#7a4a12" stroke="#5b3510" stroke-width="1.5" stroke-linejoin="round"/><circle cx="10.5" cy="51" r="2.4" fill="#5b3510"/></g></svg>';
+function lvlHTML(k,left){const t=BANK[k].length,p=Math.round(left/t*100),m=LV[k],c=(p/100*151).toFixed(1);
+  return '<span class="lc-no" aria-hidden="true">'+m.n+'</span><span class="lc-top"><em>'+m.tag+'</em><span class="lc-bn" aria-hidden="true">'+BAN.repeat(m.n)+'</span></span><span class="lc-mid"><span class="lc-txt"><b class="lc-name">'+MODES[k].name+'</b><small class="lc-desc">'+MODES[k].desc+'</small></span><span class="lc-ring" aria-hidden="true"><svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="24" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="7"/><circle cx="30" cy="30" r="24" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-dasharray="'+c+' 151" transform="rotate(-90 30 30)"/></svg><strong>'+left+'</strong></span></span><span class="lc-left">'+(left>=PER?'<b>'+left+'</b> dari '+t+' soal masih baru':'Soal baru tinggal <b>'+left+'</b>, sisanya diulang')+'</span><span class="lc-go">MULAI <i>➜</i></span>'}
+function renderMenu(note){
+  const box=$("modes");box.innerHTML="";
+  Object.keys(MODES).forEach(k=>{
+    const left=BANK[k].length-seen[k].length;
+    const b=document.createElement("button");b.className="lvl lvl-"+k;
+    b.innerHTML=lvlHTML(k,left);
+    b.onclick=()=>pgLoad(()=>start(k),"Menyiapkan soal…");box.append(b);
+  });
+  const n=$("resetnote");
+  if(note){n.textContent=note;n.classList.remove("hide")}else n.classList.add("hide");
+  $("menu").classList.remove("hide");$("play").classList.add("hide");
+}
+function start(k){
+  mode=k;
+  let ids=BANK[k].map((_,n)=>n).filter(n=>!seen[k].includes(n));
+  let note="";
+  if(ids.length<PER){
+    /* soal baru hampir habis: pakai sisa soal baru, lalu isi dengan soal lama */
+    const old=BANK[k].map((_,n)=>n).filter(n=>seen[k].includes(n));
+    ids=ids.concat(shuffle(old).slice(0,PER-ids.length));
+    seen[k]=[];
+  } else ids=shuffle(ids).slice(0,PER);
+  seen[k]=seen[k].concat(ids.filter(n=>!seen[k].includes(n)));saveSeen();
+  set=ids.map(n=>{
+    const [q,opts,a,e,c]=BANK[k][n];
+    const order=shuffle(opts.map((_,x)=>x));
+    return {q,c,e,o:order.map(x=>opts[x]),a:order.indexOf(a)};
+  });
+  i=0;score=0;
+  $("menu").classList.add("hide");$("play").classList.remove("hide");
+  show();
+}
+function show(){
+  const q=set[i];done=false;
+  $("no").textContent=MODES[mode].name+" · Soal "+(i+1)+" / "+set.length;
+  $("sc").textContent="Skor: "+score;
+  $("pb").style.width=(i/set.length*100)+"%";
+  $("next").classList.add("hide");
+  const box=$("qbox");box.innerHTML="";
+  const p=document.createElement("div");p.className="q";p.textContent=q.q;box.append(p);
+  if(q.c){const pre=document.createElement("pre");pre.className="snip";pre.textContent=q.c;box.append(pre)}
+  q.o.forEach((t,k)=>{
+    const b=document.createElement("button");b.className="opt";b.textContent="ABCD"[k]+". "+t;
+    b.onclick=()=>pick(k);box.append(b);
+  });
+}
+/* efek suara & visual */
+let AC=null;
+function tone(f,t0,d,type,vol){
+  const o=AC.createOscillator(),g=AC.createGain();
+  o.type=type;o.frequency.value=f;
+  g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(vol,t0+.02);g.gain.exponentialRampToValueAtTime(.001,t0+d);
+  o.connect(g);g.connect(AC.destination);o.start(t0);o.stop(t0+d+.05);
+}
+function sfx(ok){
+  try{
+    AC=AC||new(window.AudioContext||window.webkitAudioContext)();AC.resume();
+    const t=AC.currentTime;
+    if(ok){[523,659,784,1047].forEach((f,n)=>tone(f,t+n*.09,.25,"triangle",.25));tone(1319,t+.4,.5,"triangle",.25);}
+    else{tone(311,t,.2,"sawtooth",.16);tone(233,t+.22,.55,"sawtooth",.16);}
+  }catch(e){}
+}
+const REDUCE=matchMedia("(prefers-reduced-motion:reduce)").matches;
+function confetti(){
+  if(REDUCE)return;
+  const colors=["#ffd93b","#2f6fcf","#e5484d","#2e9e5b","#ff8fab","#8e6cf0"];
+  for(let n=0;n<70;n++){
+    const d=document.createElement("div");d.className="conf";
+    d.style.left=Math.random()*100+"vw";d.style.background=colors[n%colors.length];
+    document.body.append(d);
+    const x=(Math.random()-.5)*240,dur=1400+Math.random()*1200;
+    d.animate([{transform:"translate(0,0) rotate(0deg)",opacity:1},{transform:"translate("+x+"px,"+(innerHeight+40)+"px) rotate("+(Math.random()*720)+"deg)",opacity:.9}],{duration:dur,easing:"cubic-bezier(.2,.7,.4,1)"}).onfinish=()=>d.remove();
+  }
+}
+function redFlash(){
+  const f=document.createElement("div");f.className="flash";document.body.append(f);
+  setTimeout(()=>f.remove(),700);
+  if(!REDUCE){const b=$("qbox");b.classList.remove("shake");void b.offsetWidth;b.classList.add("shake")}
+}
+function fx(ok){sfx(ok);if(ok)confetti();else redFlash()}
+function pick(k){
+  if(done)return;done=true;
+  const q=set[i],btns=[...document.querySelectorAll(".opt")];
+  btns.forEach((b,n)=>{b.disabled=true;if(n===q.a)b.classList.add("ok");});
+  q.p=k;fx(k===q.a);
+  if(k===q.a)score++;else btns[k].classList.add("bad");
+  const e=document.createElement("div");e.className="exp";
+  e.textContent=(k===q.a?"Benar! 🎉 ":"Belum tepat 🍌 ")+q.e;
+  $("qbox").append(e);
+  $("sc").textContent="Skor: "+score;
+  $("next").textContent=i===set.length-1?"Lihat hasil":"Lanjut ➜";
+  $("next").classList.remove("hide");
+}
+$("next").onclick=()=>{
+  if(i+1>=set.length&&!window.__fin){window.__fin=1;pgLoad(()=>$("next").onclick(),"Menghitung skor…");return}
+  window.__fin=0;
+  i++;
+  if(i>=set.length){
+    $("pb").style.width="100%";
+    const pct=Math.round(score/set.length*100);
+    const msg=pct>=80?"Hebat banget! 🍌🍌🍌":pct>=50?"Lumayan, ayo coba lagi!":"Semangat, belajar lagi yuk!";
+    $("qbox").innerHTML='<div class="score"><div style="font-size:48px">🏆</div><div class="big">'+score+' / '+set.length+'</div><p style="font-weight:800;font-size:18px">✅ Benar: '+score+' &nbsp;·&nbsp; ❌ Salah: '+(set.length-score)+'</p><p>'+msg+'</p><p class="sub">Selanjutnya pilih mode lagi ya. Soalnya akan baru!</p><button class="go" id="again">Pilih mode</button></div>';
+    renderReview();
+    if(pct>=80){confetti();sfx(true)}
+    $("next").classList.add("hide");
+    $("again").onclick=()=>renderMenu();
+  } else show();
+};
+function renderReview(){
+  const box=$("qbox"),wrong=set.filter(q=>q.p!==q.a);
+  const h=document.createElement("h3");h.style.margin="18px 0 6px";
+  h.textContent=wrong.length?"📝 Pembahasan jawaban yang salah":"🎉 Semua jawabanmu benar!";
+  box.append(h);
+  wrong.forEach(q=>{
+    const d=document.createElement("div");d.className="card";d.style.cssText="margin:10px 0;padding:12px 14px;box-shadow:none";
+    const p=document.createElement("div");p.className="q";p.style.fontSize="16px";p.textContent=q.q;d.append(p);
+    if(q.c){const pre=document.createElement("pre");pre.className="snip";pre.textContent=q.c;d.append(pre)}
+    const a=document.createElement("div");a.style.cssText="color:var(--bad);font-weight:800";a.textContent="❌ Jawabanmu: "+q.o[q.p];d.append(a);
+    const b=document.createElement("div");b.style.cssText="color:var(--ok);font-weight:800;margin-top:2px";b.textContent="✅ Jawaban benar: "+q.o[q.a];d.append(b);
+    const e=document.createElement("div");e.className="exp";e.textContent="Kenapa kurang tepat: "+q.e;d.append(e);
+    box.append(d);
+  });
+}
+renderMenu();
+window.addEventListener("routechange",function(e){if(e.detail!=="kuis"&&!$("play").classList.contains("hide")){window.__fin=0;renderMenu()}});
+
+
+
+})();</script>
+<script>
+(function(){
+  var KEY_ON="pisangC_bgm_on",KEY_VOL="pisangC_bgm_vol",KEY_OWN="pisangC_bgm_owner";
+  var tabId=Math.random().toString(36).slice(2);
+  var btn=document.getElementById("bgmBtn"),vol=document.getElementById("bgmVol"),txt=document.getElementById("bgmTxt"),box=document.getElementById("bgm");
+  var ctx=null,master=null,lp=null,timer=null,playing=false,fading=false,nextTime=0,step=0,noiseBuf=null,route="home",song=null,E=.25,sw=0,justUnlocked=false;
+  function sget(k,d){try{var v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}}
+  function sset(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+  vol.value=sget(KEY_VOL,"45");
+  function hz(m){return 440*Math.pow(2,(m-69)/12)}
+  /* tiga lagu: tiap halaman beda suasana */
+  var SONGS={
+    home:{name:"Pagi Ceria",bpm:120,swing:0,lp:5200,lead:"triangle",lg:.16,cg:.07,bg:.22,hg:.05,
+      ch:[[60,64,67],[59,62,67],[57,60,64],[57,60,65]],bass:[36,43,45,41],
+      chPos:[0,4],stab:[2,6],bassPos:[0,2,4,6],oct:[2,6],kick:[0,4],snare:[],hat:[1,3,5,7],
+      mel:[[76,0,79,0,76,74,72,0],[74,0,79,0,74,72,71,0],[72,0,76,0,81,79,76,0],[77,0,76,74,72,0,69,0],
+           [76,76,79,0,84,0,79,0],[83,0,79,74,0,79,0,0],[81,0,79,76,72,76,79,0],[77,0,74,0,72,0,0,0]]},
+    kuis:{name:"Otak Encer",bpm:136,swing:0,lp:6000,lead:"square",lg:.055,cg:.07,bg:.22,hg:.05,sg:.07,
+      ch:[[59,62,67],[59,64,67],[60,64,67],[57,62,66]],bass:[43,40,36,38],
+      chPos:[0,4],stab:[2,6],bassPos:[0,2,4,6],oct:[2,6],kick:[0,4],snare:[2,6],hat:[1,3,5,7],
+      mel:[[74,0,71,74,79,0,74,71],[76,0,71,76,79,0,76,0],[72,0,76,72,79,0,76,72],[74,0,78,74,81,0,78,74],
+           [79,0,74,0,79,83,81,79],[76,0,79,0,76,71,0,0],[72,76,79,0,84,0,79,76],[78,74,69,0,74,0,0,0]]},
+    coding:{name:"Ngoding Santai",bpm:84,swing:.18,lp:2400,lead:"triangle",lg:.13,cg:.06,bg:.24,hg:.03,sg:.05,cd:4,ld:3,bd:2.4,
+      ch:[[57,60,64,67],[57,60,62,65],[55,59,62,65],[55,59,60,64]],bass:[45,50,43,48],
+      chPos:[0,5],stab:[],bassPos:[0,5],oct:[],kick:[0,5],snare:[4],hat:[0,2,4,6],
+      mel:[[76,0,0,72,0,69,0,0],[74,0,0,77,0,74,0,0],[71,0,74,0,77,0,74,0],[76,0,0,72,0,71,0,0],
+           [72,0,76,0,79,0,76,0],[77,0,74,0,72,0,69,0],[74,0,71,0,67,0,0,0],[72,0,76,0,71,0,0,0]]}
+  };
+  song=SONGS.home;
+  function tone(type,f,t,dur,g,att){
+    var o=ctx.createOscillator(),a=ctx.createGain();
+    o.type=type;o.frequency.value=f;
+    a.gain.setValueAtTime(0.0001,t);
+    a.gain.exponentialRampToValueAtTime(g,t+(att||0.01));
+    a.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(a);a.connect(master);o.start(t);o.stop(t+dur+0.05);
+  }
+  function kick(t){
+    var o=ctx.createOscillator(),a=ctx.createGain();
+    o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(45,t+0.12);
+    a.gain.setValueAtTime(0.35,t);a.gain.exponentialRampToValueAtTime(0.0001,t+0.18);
+    o.connect(a);a.connect(master);o.start(t);o.stop(t+0.2);
+  }
+  function noise(t,hpf,g,len,type){
+    var s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),a=ctx.createGain();
+    s.buffer=noiseBuf;f.type=type||"highpass";f.frequency.value=hpf;
+    a.gain.setValueAtTime(g,t);a.gain.exponentialRampToValueAtTime(0.0001,t+len);
+    s.connect(f);f.connect(a);a.connect(master);s.start(t);s.stop(t+len+0.02);
+  }
+  function schedule(s,t0){
+    var g=song,bar=Math.floor(s/8)%8,pos=s%8,c=bar%4,t=t0+(pos%2===1?E*g.swing:0);
+    var n=g.mel[bar][pos];
+    if(n){tone(g.lead,hz(n),t,E*(g.ld||1.9),g.lg,0.01);tone("sine",hz(n+12),t,E*1.2,g.lg*.25,0.01)}
+    if(g.chPos.indexOf(pos)>=0)g.ch[c].forEach(function(m){tone("sine",hz(m),t,E*(g.cd||3.6),g.cg,0.02)});
+    if(g.stab.indexOf(pos)>=0)g.ch[c].forEach(function(m){tone("sine",hz(m+12),t,E*1.2,g.cg*.36,0.01)});
+    if(g.bassPos.indexOf(pos)>=0)tone("triangle",hz(g.bass[c]+(g.oct.indexOf(pos)>=0?12:0)),t,E*(g.bd||1.6),g.bg,0.01);
+    if(g.kick.indexOf(pos)>=0)kick(t);
+    if(g.snare.indexOf(pos)>=0)noise(t,1800,g.sg||.07,0.12,"bandpass");
+    if(g.hat.indexOf(pos)>=0)noise(t,7000,g.hg,0.05,"highpass");
+  }
+  function tick(){
+    if(fading||!ctx)return;
+    while(nextTime<ctx.currentTime+0.4){schedule(step,nextTime);nextTime+=E;step=(step+1)%64}
+  }
+  function build(){
+    if(ctx)return;
+    var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+    ctx=new AC();
+    lp=ctx.createBiquadFilter();lp.type="lowpass";lp.frequency.value=song.lp;
+    master=ctx.createGain();master.gain.value=0;
+    master.connect(lp);lp.connect(ctx.destination);
+    noiseBuf=ctx.createBuffer(1,ctx.sampleRate*0.2,ctx.sampleRate);
+    var d=noiseBuf.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+    ctx.onstatechange=function(){ui();if(ctx.state==="running")unbind()};
+  }
+  function level(){return Math.pow(vol.value/100,2)*0.9}
+  function ui(){
+    var nm=(SONGS[route]||SONGS.home).name,wait=playing&&ctx&&ctx.state!=="running";
+    box.classList.toggle("on",playing&&!wait);
+    btn.textContent=playing&&!wait?"🔊":"🎵";
+    btn.setAttribute("aria-label",playing?"Jeda musik latar":"Putar musik latar");
+    btn.title=playing?"Jeda musik ("+nm+")":"Putar musik";
+    txt.textContent=wait?"Ketuk untuk musik":playing?"♪ "+nm:"Musik mati";
+  }
+  function applySong(){
+    song=SONGS[route]||SONGS.home;E=60/song.bpm/2;
+    if(lp)lp.frequency.setTargetAtTime(song.lp,ctx.currentTime,0.05);
+    step=0;nextTime=ctx.currentTime+0.05;
+  }
+  function resume(){try{var p=ctx.resume();if(p&&p.then)p.then(ui,ui)}catch(e){}}
+  function start(user){
+    build();if(!ctx)return;
+    if(user)sset(KEY_ON,"1");
+    if(ctx.state!=="running")resume();
+    if(playing){ui();return}
+    playing=true;sset(KEY_OWN,tabId);
+    applySong();
+    master.gain.cancelScheduledValues(ctx.currentTime);
+    master.gain.setValueAtTime(0,ctx.currentTime);
+    master.gain.linearRampToValueAtTime(level(),ctx.currentTime+1.2);
+    timer=setInterval(tick,100);tick();ui();
+  }
+  function stop(user){
+    if(!playing)return;
+    playing=false;if(user)sset(KEY_ON,"0");
+    master.gain.cancelScheduledValues(ctx.currentTime);
+    master.gain.setValueAtTime(master.gain.value,ctx.currentTime);
+    master.gain.linearRampToValueAtTime(0,ctx.currentTime+0.4);
+    var c=ctx;clearInterval(timer);timer=null;
+    setTimeout(function(){if(!playing&&c.suspend)c.suspend()},600);
+    ui();
+  }
+  /* ganti lagu saat pindah halaman (crossfade) */
+  var swId=0;
+  function setRoute(r){
+    if(r===route&&song===SONGS[r])return;
+    route=r;
+    if(!playing||!ctx){song=SONGS[r]||SONGS.home;E=60/song.bpm/2;ui();return}
+    var my=++swId;fading=true;
+    master.gain.cancelScheduledValues(ctx.currentTime);
+    master.gain.setTargetAtTime(0,ctx.currentTime,0.08);
+    setTimeout(function(){
+      if(my!==swId)return;
+      fading=false;if(!playing)return;
+      applySong();master.gain.setTargetAtTime(level(),ctx.currentTime,0.3);ui();
+    },380);
+  }
+  window.addEventListener("routechange",function(e){setRoute(e.detail)});
+  btn.onclick=function(){
+    if(justUnlocked){justUnlocked=false;return}
+    playing?stop(true):start(true);
+  };
+  vol.oninput=function(){sset(KEY_VOL,vol.value);if(playing)master.gain.setTargetAtTime(level(),ctx.currentTime,0.05)};
+  window.addEventListener("storage",function(e){
+    if(e.key===KEY_OWN&&e.newValue&&e.newValue!==tabId&&playing)stop(false);
+  });
+  /* otomatis menyala saat web dibuka; browser baru mengizinkan suara setelah ketukan pertama */
+  var EV=["pointerdown","mousedown","touchend","keydown","click"];
+  function unlock(){
+    if(sget(KEY_ON,"1")==="0")return;
+    if(ctx&&ctx.state==="running")return;
+    justUnlocked=true;setTimeout(function(){justUnlocked=false},500);
+    if(!playing)start(false);else if(ctx)resume();
+  }
+  function unbind(){EV.forEach(function(n){document.removeEventListener(n,unlock,true)})}
+  window.bgmWanted=function(){return sget(KEY_ON,"1")!=="0"};
+  window.bgmRunning=function(){return !!ctx&&ctx.state==="running"};
+  ui();
+  if(sget(KEY_ON,"1")!=="0"){
+    start(false);
+    if(ctx&&ctx.state!=="running")EV.forEach(function(n){document.addEventListener(n,unlock,true)});
+  }
+})();
+</script>
+<script>
+(function(){
+  var T={home:"Belajar Bahasa C",kuis:"Kuis · Belajar Bahasa C",coding:"Materi · Belajar Bahasa C"},cur=null,ld=document.getElementById("pgload"),busy=false;
+  function show(r){
+    cur=r;
+    document.querySelectorAll(".view").forEach(function(v){
+      var on=v.dataset.route===r;
+      if(on&&v.hidden){v.hidden=false;v.classList.remove("in");void v.offsetWidth;v.classList.add("in")}
+      else if(!on)v.hidden=true;
+    });
+    document.querySelectorAll("[data-r]").forEach(function(a){
+      var on=a.dataset.r===r;a.classList.toggle("on",on);
+      if(on)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");
+    });
+    document.title=T[r];window.scrollTo(0,0);window.dispatchEvent(new CustomEvent("routechange",{detail:r}));
+  }
+  var LB={home:"Kembali ke beranda…",kuis:"Membuka kuis…",coding:"Membuka materi…"};
+  function pgLoad(cb,label){
+    if(busy){cb&&cb();return}
+    busy=true;document.getElementById("plt").textContent=label||"Memuat…";
+    ld.classList.remove("on");void ld.offsetWidth;ld.classList.add("on");
+    setTimeout(function(){cb&&cb()},380);
+    setTimeout(function(){ld.classList.remove("on");busy=false},850);
+  }
+  window.pgLoad=pgLoad;
+  function go(r){if(r===cur||busy)return;pgLoad(function(){show(r)},LB[r])}
+  function fromHash(){var h=location.hash.replace(/^#\/?/,"");return T[h]?h:"home"}
+  document.addEventListener("click",function(e){
+    var a=e.target.closest&&e.target.closest('a[href^="#/"]');if(!a)return;
+    e.preventDefault();var r=a.getAttribute("href").replace(/^#\/?/,"")||"home";if(!T[r])r="home";
+    try{location.hash=r==="home"?"/":"/"+r}catch(x){}
+    go(r);
+  });
+  window.addEventListener("hashchange",function(){go(fromHash())});
+  show(fromHash());
+  /* layar pembuka: tanya nama (sekaligus ketukan pertama untuk izin musik) */
+  var sp=document.getElementById("splash"),t0=Date.now(),closed=false,gated=false;
+  var KEY_NAME="pisangC_name",KEY_SENT="pisangC_name_sent",ENDPOINT=String(window.NAMA_ENDPOINT||"").trim();
+  var inp=document.getElementById("spname"),errEl=document.getElementById("sperr"),goBtn=document.getElementById("spgo"),chg=document.getElementById("spchg"),qEl=document.getElementById("spq");
+  function gname(){return window.__nama||""}
+  function greet(n){document.getElementById("hello").textContent=n?"Haii, "+n+"! 👋":"Halo! 👋";var h=document.getElementById("hiName");if(h){document.getElementById("hiN").textContent=n||"";h.hidden=!n;if(n){h.style.animation="none";void h.offsetWidth;h.style.animation=""}}}
+  function welcome(n){
+    try{
+      var w=document.createElement("div");w.className="wl";w.setAttribute("role","status");
+      if(!matchMedia("(prefers-reduced-motion:reduce)").matches){
+        var L=document.createElement("div");L.className="wl-b";w.append(L);
+        var W=innerWidth,H=innerHeight,len=Array.from(n).length,R=Math.random;
+        for(var k=0;k<44;k++){
+          var z=Math.round(34+R()*46),d=document.createElement("div"),pop=k>=26,sx,sy,tx,ty,e=Math.floor(R()*4);
+          if(pop){sx=R()*(W-z);sy=R()*(H-z);tx=sx+(R()-.5)*160;ty=sy+(R()-.5)*160}
+          else if(e===0){sx=R()*W;sy=H+z;tx=R()*W;ty=-z-40}
+          else if(e===1){sx=R()*W;sy=-z;tx=R()*W;ty=H+40}
+          else if(e===2){sx=-z;sy=R()*H;tx=W+40;ty=R()*H}
+          else{sx=W+z;sy=R()*H;tx=-z-40;ty=R()*H}
+          d.className="bb"+(pop?" pop":"");
+          d.style.cssText="width:"+z+"px;height:"+z+"px;--sx:"+Math.round(sx)+"px;--sy:"+Math.round(sy)+"px;--tx:"+Math.round(tx)+"px;--ty:"+Math.round(ty)+"px;animation-duration:"+(pop?(2.2+R()*1.6):(3.6+R()*2.4)).toFixed(1)+"s;animation-delay:"+(R()*(pop?3:1.6)).toFixed(2)+"s";
+          var t=document.createElement("span");t.textContent=n;
+          t.style.fontSize=Math.max(7,Math.min(z*.3,z*.8/(len*.62)))+"px";
+          d.append(t);L.append(d);
+        }
+      }
+      var a=document.createElement("div");a.className="wl-s";a.textContent="Haii,";w.append(a);
+      var b=document.createElement("div");b.className="wl-n";
+      Array.from(n).forEach(function(c,i){var x=document.createElement("span");x.textContent=c===" "?"\u00a0":c;x.style.animationDelay=(0.25+i*0.07)+"s";b.append(x)});
+      w.append(b);
+      var e=document.createElement("div");e.className="wl-e";e.textContent="Selamat belajar Bahasa C! 🍌";w.append(e);
+      document.body.append(w);
+      var t=5400;
+      setTimeout(function(){w.classList.add("out")},t);
+      setTimeout(function(){w.remove()},t+700);
+    }catch(e){}
+  }
+  var NTFY_TOPIC=String(window.NTFY_TOPIC||"").trim();
+  function notify(n){
+    if(!NTFY_TOPIC)return;
+    try{
+      var q="title="+encodeURIComponent("Pengunjung baru")+"&message="+encodeURIComponent(n+" baru masuk ke Belajar Bahasa C ("+new Date().toLocaleString("id-ID")+")")+"&tags=wave&priority=4";
+      fetch("https://ntfy.sh/"+encodeURIComponent(NTFY_TOPIC)+"/publish?"+q,{mode:"no-cors",cache:"no-store",keepalive:true}).catch(function(){});
+    }catch(e){}
+  }
+  function sendName(n){
+    notify(n);
+    if(!ENDPOINT)return;
+    try{fetch(ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({nama:n,waktu:new Date().toISOString()})}).then(function(){try{localStorage.setItem(KEY_SENT,n)}catch(e){}}).catch(function(){})}catch(e){}
+  }
+  function closeSplash(){if(closed)return;closed=true;sp.classList.add("out");setTimeout(function(){sp.remove()},700)}
+  function showForm(n){
+    document.getElementById("spbar").hidden=true;document.getElementById("sps").hidden=true;
+    document.getElementById("spform").hidden=false;
+    if(n){qEl.textContent="Halo lagi, "+n+"! 👋";inp.hidden=true;chg.hidden=false;goBtn.textContent="LANJUT ➜"}
+    else{try{inp.focus()}catch(e){}}
+  }
+  function submit(){
+    if(!inp.hidden){
+      var v=inp.value.replace(/[\u0000-\u001f\u007f]/g,"").replace(/\s+/g," ").trim();
+      if(v.length<2){errEl.hidden=false;inp.focus();return}
+      v=v.replace(/(^|\s)(\p{L})/gu,function(m,a,b){return a+b.toUpperCase()});window.__nama=v;greet(v);welcome(v);sendName(v);
+    }
+    closeSplash();
+  }
+  goBtn.addEventListener("click",submit);
+  inp.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();submit()}});
+  inp.addEventListener("input",function(){errEl.hidden=true});
+  chg.addEventListener("click",function(){
+    inp.hidden=false;inp.value="";chg.hidden=true;qEl.textContent="Siapa namamu?";goBtn.textContent="MASUK ➜";try{inp.focus()}catch(e){}
+  });
+  function gate(){
+    if(closed||gated)return;gated=true;
+    showForm("");
+  }
+  function ready(){setTimeout(gate,Math.max(0,1500-(Date.now()-t0)))}
+  if(document.readyState==="complete")ready();else window.addEventListener("load",ready);
+  setTimeout(gate,4000);
+  /* bersihkan service worker lama (sisa versi aplikasi) */
+  try{if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol)){navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){r.unregister()})}).catch(function(){})}}catch(e){}
+  /* tema */
+  var tb=document.getElementById("theme");
+  tb.onclick=function(){
+    var r=document.documentElement;
+    var dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
+    r.dataset.theme=dark?"light":"dark";tb.textContent=dark?"🌙":"☀️";
+  };
+})();
+</script>
+<script>
+(function(){
+  var ac=null,last=0;
+  function ctx(){
+    if(!ac){var A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ac=new A()}
+    if(ac.state!=="running"){try{ac.resume()}catch(e){}}
+    return ac;
+  }
+  function note(f,t,d,type,g,glide){
+    var o=ac.createOscillator(),a=ac.createGain();
+    o.type=type;o.frequency.setValueAtTime(f,t);
+    o.frequency.exponentialRampToValueAtTime(f*glide,t+d*.8);
+    a.gain.setValueAtTime(.0001,t);a.gain.exponentialRampToValueAtTime(g,t+.012);a.gain.exponentialRampToValueAtTime(.0001,t+d);
+    o.connect(a);a.connect(ac.destination);o.start(t);o.stop(t+d+.03);
+  }
+  function play(k){
+    var c=ctx();if(!c)return;
+    var n=performance.now();if(n-last<40)return;last=n;
+    var t=c.currentTime+.01,j=1+(Math.random()-.5)*.06;
+    var kz=document.getElementById("v-kuis");
+    if(kz&&!kz.hidden){note(440*j,t,.08,"sine",.05,.72);note(660*j,t+.045,.07,"triangle",.025,.8);return}
+    if(k==="tab"){note(784*j,t,.11,"sine",.2,1.35);note(1175*j,t+.07,.14,"triangle",.14,1.2)}
+    else if(k==="go"){note(660*j,t,.1,"sine",.2,1.3);note(880*j,t+.07,.1,"sine",.17,1.25);note(1318*j,t+.14,.18,"triangle",.14,1.15)}
+    else note(620*j,t,.09,"sine",.22,1.5);
+  }
+  function kind(e){
+    var el=e.target&&e.target.closest?e.target.closest('a[href],button,select,[role=button]'):null;
+    if(!el||el.disabled||el.closest('.opt')||el.id==="bgmVol")return null;
+    if(el.closest('.appnav,.tabbar,.brand'))return"tab";
+    if(el.classList.contains("go")||el.classList.contains("lvl")||el.id==="spgo")return"go";
+    return"pop";
+  }
+  document.addEventListener("pointerdown",function(e){if(e.button>0)return;var k=kind(e);if(k)play(k)},true);
+  document.addEventListener("click",function(e){if(e.detail===0){var k=kind(e);if(k)play(k)}},true);
+})();
+</script>
+<script>
+(function(){
+  var T=document.getElementById("ckTime"),D=document.getElementById("ckDate"),G=document.getElementById("ckGreet");
+  function p(n){return n<10?"0"+n:""+n}
+  function zone(d){var o=-d.getTimezoneOffset();return o===420?"WIB":o===480?"WITA":o===540?"WIT":"GMT"+(o>=0?"+":"-")+Math.floor(Math.abs(o)/60)}
+  function tick(){
+    var d=new Date(),h=d.getHours();
+    T.innerHTML=p(h)+'<span class="c">:</span>'+p(d.getMinutes())+'<span class="c">:</span>'+p(d.getSeconds())+'<small> '+zone(d)+'</small>';
+    D.textContent=d.toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+    var w=h>=4&&h<11?"Selamat pagi 🌅":h>=11&&h<15?"Selamat siang ☀️":h>=15&&h<18?"Selamat sore 🌇":"Selamat malam 🌙",n="";
+    n=window.__nama||"";
+    G.textContent=n?w+", "+n+"!":w;
+  }
+  tick();setInterval(tick,1000);
+})();
+</script>
+<script>
+(function(){var all=[].slice.call(document.querySelectorAll('.mat details'));
+all.forEach(function(d){d.addEventListener('toggle',function(){
+if(!d.open)return;
+all.forEach(function(o){if(o!==d)o.open=false});
+setTimeout(function(){d.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'})},40);
+})})})();
+</script>
+</body>
+</html>
